@@ -275,7 +275,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["guardar_liquidacion"])
 
                 $mensaje = "Liquidación guardada correctamente. Total final: $" . number_format($total_final, 0, ',', '.');
                 require_once "../../includes/auth.php";
-                /* ==========================
+
+/* ==========================
 ENVIAR CORREO FINAL
 ========================== */
 
