@@ -3,13 +3,7 @@ require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../views/partials/header.php';
 require_once __DIR__ . '/../views/partials/navbar.php';
 
-// Consulta para mostrar solo los 3 vehículos que quieres en el catálogo
-$sql = "SELECT * FROM vehiculos 
-        WHERE (marca = 'Renault' AND modelo = 'Kwid')
-           OR (marca = 'Kia' AND modelo = 'Picanto')
-           OR (marca = 'Suzuki' AND modelo LIKE '%Swift%')
-        ORDER BY FIELD(marca, 'Renault', 'Kia', 'Suzuki')";
-
+$sql = "SELECT * FROM vehiculos WHERE estado = 'disponible' ORDER BY id_vehiculo ASC";
 $stmt = $conexion->prepare($sql);
 $stmt->execute();
 $vehiculos = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -17,18 +11,17 @@ $vehiculos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <main class="page-section">
     <div class="container">
-        <h1>Vehículos disponibles para tu viaje</h1>
-        <p class="catalogo-texto">
-            Conoce nuestros vehículos disponibles en Barranquilla. Elige el que mejor se adapte a tu necesidad.
-        </p>
+        <div class="section-header">
+            <h1>Vehículos disponibles para tu viaje</h1>
+            <p class="catalogo-texto">
+                Conoce nuestros vehículos disponibles en Barranquilla. Elige el que mejor se adapte a tu necesidad.
+            </p>
+        </div>
 
-        <div class="vehiculos-grid">
-
-            <?php if (count($vehiculos) > 0): ?>
+        <?php if (!empty($vehiculos)): ?>
+            <div class="vehicle-grid">
                 <?php foreach ($vehiculos as $vehiculo): ?>
-
                     <div class="vehiculo-card">
-
                         <?php if (!empty($vehiculo['imagen'])): ?>
                             <img
                                 src="/benedetti-rent-a-car/assets/img/<?php echo htmlspecialchars($vehiculo['imagen']); ?>"
@@ -36,15 +29,14 @@ $vehiculos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 class="vehiculo-img"
                             >
                         <?php else: ?>
-                            <div class="vehiculo-sin-imagen">Sin imagen disponible</div>
+                            <div class="vehiculo-sin-imagen">
+                                Imagen no disponible
+                            </div>
                         <?php endif; ?>
 
                         <div class="vehiculo-info">
-                            <h3>
-                                <?php echo htmlspecialchars($vehiculo['marca'] . ' ' . $vehiculo['modelo']); ?>
-                            </h3>
+                            <h3><?php echo htmlspecialchars($vehiculo['marca'] . ' ' . $vehiculo['modelo']); ?></h3>
 
-                            <p><strong>Color:</strong> <?php echo htmlspecialchars($vehiculo['color']); ?></p>
                             <p><strong>Capacidad:</strong> <?php echo htmlspecialchars($vehiculo['capacidad']); ?> personas</p>
                             <p><strong>Transmisión:</strong> <?php echo htmlspecialchars($vehiculo['transmision']); ?></p>
                             <p><strong>Categoría:</strong> <?php echo htmlspecialchars($vehiculo['categoria']); ?></p>
@@ -56,28 +48,27 @@ $vehiculos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                             <p class="estado-vehiculo">
                                 <strong>Estado:</strong>
-                                <span class="<?php echo ($vehiculo['estado'] === 'disponible') ? 'estado-disponible' : 'estado-no-disponible'; ?>">
+                                <span class="<?php echo $vehiculo['estado'] === 'disponible' ? 'estado-disponible' : 'estado-no-disponible'; ?>">
                                     <?php echo htmlspecialchars(ucfirst($vehiculo['estado'])); ?>
                                 </span>
                             </p>
 
                             <?php if ($vehiculo['estado'] === 'disponible'): ?>
-                                <a href="reserva.php?id_vehiculo=<?php echo urlencode($vehiculo['id_vehiculo']); ?>" class="btn btn-primary">
+                                <a href="/benedetti-rent-a-car/public/reserva.php?id_vehiculo=<?php echo urlencode($vehiculo['id_vehiculo']); ?>" class="btn btn-primary">
                                     Reservar
                                 </a>
                             <?php else: ?>
-                                <button class="btn btn-disabled" disabled>No disponible</button>
+                                <button class="btn-disabled" disabled>No disponible</button>
                             <?php endif; ?>
                         </div>
-
                     </div>
-
                 <?php endforeach; ?>
-            <?php else: ?>
-                <p>No se encontraron vehículos para mostrar en este momento.</p>
-            <?php endif; ?>
-
-        </div>
+            </div>
+        <?php else: ?>
+            <div class="placeholder-box">
+                <p>No hay vehículos disponibles en este momento.</p>
+            </div>
+        <?php endif; ?>
     </div>
 </main>
 
