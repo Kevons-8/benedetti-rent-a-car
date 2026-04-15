@@ -8,7 +8,7 @@ require_once __DIR__ . '/../views/partials/navbar.php';
 $idReserva = isset($_GET['id_reserva']) ? (int)$_GET['id_reserva'] : 0;
 
 if ($idReserva <= 0) {
-    echo "<main class='page-section'><div class='container'><div class='placeholder-box'><h2>Reserva no válida</h2></div></div></main>";
+    echo "<main class='page-section'><div class='container'><div class='placeholder-box'><h2>Reserva no válida</h2><p>No se recibió una reserva válida para continuar con el pago.</p></div></div></main>";
     require_once __DIR__ . '/../views/partials/footer.php';
     exit;
 }
@@ -47,7 +47,7 @@ $stmt->execute();
 $reserva = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$reserva) {
-    echo "<main class='page-section'><div class='container'><div class='placeholder-box'><h2>No se encontró la reserva</h2></div></div></main>";
+    echo "<main class='page-section'><div class='container'><div class='placeholder-box'><h2>No se encontró la reserva</h2><p>La reserva consultada no existe o no tiene un pago asociado.</p></div></div></main>";
     require_once __DIR__ . '/../views/partials/footer.php';
     exit;
 }
@@ -65,11 +65,39 @@ if (
 }
 
 $metodosPermitidos = [];
-
 if ($tipoCliente === 'nuevo') {
     $metodosPermitidos = ['tarjeta'];
 } else {
     $metodosPermitidos = ['tarjeta', 'pse', 'qr', 'efectivo'];
+}
+
+$marcaModelo = trim(($reserva['marca'] ?? '') . ' ' . ($reserva['modelo'] ?? ''));
+$imagenVehiculo = !empty($reserva['imagen']) ? $reserva['imagen'] : null;
+
+if (
+    strtolower(trim($reserva['marca'] ?? '')) === 'mazda' &&
+    strtolower(trim($reserva['modelo'] ?? '')) === '2'
+) {
+    $imagenVehiculo = 'Mazda_2_sedan.png';
+}
+
+$totalPagar = 0;
+if (isset($reserva['total_final']) && (float)$reserva['total_final'] > 0) {
+    $totalPagar = (float)$reserva['total_final'];
+} else {
+    $totalPagar = (float)($reserva['total_estimado'] ?? 0);
+}
+
+function formatearEstado(string $valor = null): string
+{
+    $valor = trim((string)$valor);
+
+    if ($valor === '') {
+        return 'No definido';
+    }
+
+    $valor = str_replace('_', ' ', $valor);
+    return ucfirst($valor);
 }
 ?>
 
@@ -80,6 +108,8 @@ if ($tipoCliente === 'nuevo') {
 
 .pago-title {
     margin-bottom: 24px;
+    font-size: 2.2rem;
+    font-weight: 800;
 }
 
 .pago-layout {
@@ -100,6 +130,7 @@ if ($tipoCliente === 'nuevo') {
     border-radius: 20px;
     padding: 24px;
     box-shadow: 0 18px 35px rgba(0,0,0,0.18);
+    animation: fadeUp 0.8s ease;
 }
 
 .pago-block {
@@ -108,12 +139,18 @@ if ($tipoCliente === 'nuevo') {
     border-radius: 16px;
     padding: 18px;
     margin-bottom: 18px;
+    transition: all 0.25s ease;
+}
+
+.pago-block:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.18);
 }
 
 .pago-block-title {
     font-size: 1rem;
     font-weight: 700;
-    color: #ffffff;
+    color: #f7c600;
     margin-bottom: 14px;
     padding-bottom: 8px;
     border-bottom: 1px solid rgba(255,255,255,0.08);
@@ -133,6 +170,7 @@ if ($tipoCliente === 'nuevo') {
     font-size: 1.22rem;
     font-weight: 700;
     color: #38bdf8;
+    margin-top: 10px;
 }
 
 .pago-note {
@@ -182,16 +220,27 @@ if ($tipoCliente === 'nuevo') {
     line-height: 1.5;
 }
 
-.badge-cliente {
+.badge-cliente,
+.badge-estado {
     display: inline-block;
     margin-top: 8px;
+    margin-right: 8px;
     padding: 8px 12px;
     border-radius: 999px;
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.badge-cliente {
     background: rgba(56, 189, 248, 0.12);
     border: 1px solid rgba(56, 189, 248, 0.22);
     color: #7dd3fc;
-    font-size: 0.88rem;
-    font-weight: 700;
+}
+
+.badge-estado {
+    background: rgba(247, 198, 0, 0.10);
+    border: 1px solid rgba(247, 198, 0, 0.18);
+    color: #f7c600;
 }
 
 .vehiculo-mini-img {
@@ -201,6 +250,16 @@ if ($tipoCliente === 'nuevo') {
     display: block;
     border-radius: 16px;
     margin-bottom: 14px;
+}
+
+.pago-ayuda {
+    margin-top: 14px;
+    padding: 14px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    color: #d8e2f0;
+    line-height: 1.6;
 }
 
 @media (max-width: 992px) {
@@ -225,6 +284,10 @@ if ($tipoCliente === 'nuevo') {
     .pago-block {
         padding: 14px;
     }
+
+    .pago-title {
+        font-size: 1.9rem;
+    }
 }
 </style>
 
@@ -235,20 +298,21 @@ if ($tipoCliente === 'nuevo') {
         <div class="pago-layout">
             <aside class="pago-sidebar">
                 <div class="vehiculo-card vehiculo-resumen">
-                    <?php if (!empty($reserva['imagen'])): ?>
+                    <?php if ($imagenVehiculo): ?>
                         <img
-                            src="/benedetti-rent-a-car/assets/img/<?php echo htmlspecialchars($reserva['imagen']); ?>"
-                            alt="<?php echo htmlspecialchars(($reserva['marca'] ?? '') . ' ' . ($reserva['modelo'] ?? '')); ?>"
+                            src="/benedetti-rent-a-car/assets/img/<?php echo htmlspecialchars($imagenVehiculo); ?>"
+                            alt="<?php echo htmlspecialchars($marcaModelo); ?>"
                             class="vehiculo-mini-img"
                         >
                     <?php endif; ?>
 
                     <div class="vehiculo-info">
-                        <h3><?php echo htmlspecialchars(($reserva['marca'] ?? '') . ' ' . ($reserva['modelo'] ?? '')); ?></h3>
+                        <h3><?php echo htmlspecialchars($marcaModelo); ?></h3>
                         <p><strong>Reserva:</strong> <?php echo htmlspecialchars($reserva['codigo_reserva']); ?></p>
                         <p><strong>Referencia:</strong> <?php echo htmlspecialchars($reserva['referencia_pago']); ?></p>
                         <p><strong>Cliente:</strong> <?php echo htmlspecialchars(($reserva['nombres'] ?? '') . ' ' . ($reserva['apellidos'] ?? '')); ?></p>
                         <span class="badge-cliente">Cliente <?php echo htmlspecialchars($tipoCliente); ?></span>
+                        <span class="badge-estado">Pago <?php echo htmlspecialchars(formatearEstado($reserva['estado_pago'] ?? '')); ?></span>
                     </div>
                 </div>
             </aside>
@@ -258,9 +322,11 @@ if ($tipoCliente === 'nuevo') {
                     <h2 class="pago-block-title">Resumen de la reserva</h2>
                     <p><strong>Fecha inicio:</strong> <?php echo htmlspecialchars($reserva['fecha_inicio']); ?></p>
                     <p><strong>Fecha fin:</strong> <?php echo htmlspecialchars($reserva['fecha_fin']); ?></p>
-                    <p><strong>Entrega:</strong> <?php echo htmlspecialchars($reserva['lugar_entrega']); ?></p>
-                    <p><strong>Devolución:</strong> <?php echo htmlspecialchars($reserva['lugar_devolucion']); ?></p>
-                    <p class="pago-total"><strong>Total a pagar:</strong> $<?php echo number_format((float)$reserva['total_final'], 0, ',', '.'); ?></p>
+                    <p><strong>Lugar de entrega:</strong> <?php echo htmlspecialchars($reserva['lugar_entrega']); ?></p>
+                    <p><strong>Lugar de devolución:</strong> <?php echo htmlspecialchars($reserva['lugar_devolucion']); ?></p>
+                    <p><strong>Estado de reserva:</strong> <?php echo htmlspecialchars(formatearEstado($reserva['estado_reserva'] ?? '')); ?></p>
+                    <p><strong>Estado de pago:</strong> <?php echo htmlspecialchars(formatearEstado($reserva['estado_pago'] ?? '')); ?></p>
+                    <p class="pago-total"><strong>Total a pagar:</strong> $<?php echo number_format($totalPagar, 0, ',', '.'); ?></p>
                 </div>
 
                 <div class="pago-block">
@@ -272,7 +338,7 @@ if ($tipoCliente === 'nuevo') {
                         </p>
                     <?php else: ?>
                         <p class="pago-note">
-                            Como cliente recurrente o referido, tienes habilitados más métodos de pago.
+                            Como cliente recurrente o referido, tienes habilitados más métodos de pago para continuar con tu reserva.
                         </p>
                     <?php endif; ?>
 
@@ -283,7 +349,7 @@ if ($tipoCliente === 'nuevo') {
                                 <input type="hidden" name="metodo_pago" value="tarjeta">
                                 <button type="submit" class="metodo-btn">
                                     <strong>Pagar con tarjeta</strong>
-                                    <span>Pago online para continuar con el proceso de confirmación.</span>
+                                    <span>Pago online simulado para continuar con el proceso de confirmación.</span>
                                 </button>
                             </form>
                         <?php endif; ?>
@@ -294,7 +360,7 @@ if ($tipoCliente === 'nuevo') {
                                 <input type="hidden" name="metodo_pago" value="pse">
                                 <button type="submit" class="metodo-btn">
                                     <strong>Pagar con PSE</strong>
-                                    <span>Pago desde cuenta bancaria con validación posterior.</span>
+                                    <span>Pago simulado desde cuenta bancaria con validación posterior.</span>
                                 </button>
                             </form>
                         <?php endif; ?>
@@ -305,7 +371,7 @@ if ($tipoCliente === 'nuevo') {
                                 <input type="hidden" name="metodo_pago" value="qr">
                                 <button type="submit" class="metodo-btn">
                                     <strong>Pagar con QR</strong>
-                                    <span>Transferencia o pago por código QR según tu flujo interno.</span>
+                                    <span>Transferencia o pago por código QR dentro del flujo simulado.</span>
                                 </button>
                             </form>
                         <?php endif; ?>
@@ -316,10 +382,14 @@ if ($tipoCliente === 'nuevo') {
                                 <input type="hidden" name="metodo_pago" value="efectivo">
                                 <button type="submit" class="metodo-btn">
                                     <strong>Pago en efectivo con anticipo</strong>
-                                    <span>Tu reserva queda sujeta a confirmación del anticipo requerido.</span>
+                                    <span>Tu reserva quedará pendiente de validación del anticipo requerido.</span>
                                 </button>
                             </form>
                         <?php endif; ?>
+                    </div>
+
+                    <div class="pago-ayuda">
+                        <p><strong>Nota:</strong> esta fase usa lógica de pago simulada. El objetivo es validar el flujo completo de negocio antes de integrar Wompi u otra pasarela real.</p>
                     </div>
                 </div>
             </section>

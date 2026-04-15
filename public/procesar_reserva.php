@@ -115,7 +115,7 @@ try {
         SELECT COUNT(*)
         FROM reservas
         WHERE id_vehiculo = :id_vehiculo
-          AND estado_reserva IN ('confirmada', 'pago_parcial_confirmado')
+          AND estado_reserva IN ('confirmada', 'reserva_confirmada', 'pago_parcial_confirmado', 'pendiente_anticipo')
           AND (:fecha_inicio < fecha_fin AND :fecha_fin > fecha_inicio)
     ";
     $stmtDisp = $conexion->prepare($sqlDisponibilidad);
@@ -146,8 +146,8 @@ try {
     $clienteReferente = null;
 
     if ($cliente) {
-        $estadoCliente = $cliente['estado_cliente'] ?? null;
-        $tipoCliente = ($estadoCliente === 'prospecto') ? 'nuevo' : 'existente';
+        $estadoCliente = trim((string)($cliente['estado_cliente'] ?? ''));
+        $tipoCliente = ($estadoCliente === 'activo') ? 'existente' : 'nuevo';
     } elseif ($datos['codigo_referido'] !== '') {
         $sqlReferido = "SELECT * FROM clientes WHERE codigo_cliente = :codigo_cliente LIMIT 1";
         $stmtReferido = $conexion->prepare($sqlReferido);
@@ -235,6 +235,20 @@ try {
     $totalEstimado += $costoEntrega + $costoDevolucion + $costoKm;
     $totalFinal = $totalEstimado;
 
+    /*
+     * Anticipo base para flujo simulado:
+     * - 30% del total final
+     * - mínimo 50.000
+     * - si el total es menor, se usa el total
+     */
+    $anticipoRequerido = 0;
+    if ($totalFinal > 0) {
+        $anticipoRequerido = round($totalFinal * 0.30);
+        if ($anticipoRequerido < 50000) {
+            $anticipoRequerido = min(50000, $totalFinal);
+        }
+    }
+
     $codigoReserva = 'RES-' . date('YmdHis') . '-' . random_int(1000, 9999);
 
     $sqlInsertReserva = "
@@ -278,7 +292,7 @@ try {
             'pendiente_pago',
             'pendiente',
             :codigo_referido_usado,
-            0,
+            :anticipo_requerido,
             0,
             :total_pago,
             :total_estimado,
@@ -307,6 +321,7 @@ try {
     $stmtInsertReserva->bindValue(':lugar_devolucion', $lugarDevolucionFinal);
     $stmtInsertReserva->bindValue(':observaciones', $datos['observaciones']);
     $stmtInsertReserva->bindValue(':codigo_referido_usado', $datos['codigo_referido'] !== '' ? $datos['codigo_referido'] : null);
+    $stmtInsertReserva->bindValue(':anticipo_requerido', $anticipoRequerido);
     $stmtInsertReserva->bindValue(':total_pago', $totalEstimado);
     $stmtInsertReserva->bindValue(':total_estimado', $totalEstimado);
     $stmtInsertReserva->bindValue(':horas_extra_cobradas', $horasAdicionales, PDO::PARAM_INT);
