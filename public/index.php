@@ -6,9 +6,9 @@ require_once __DIR__ . '/../views/partials/navbar.php';
 <main>
     <section class="hero">
         <div class="hero-slider">
-            <div class="hero-slide active" style="background-image: url('/benedetti-rent-a-car/assets/img/driving_one.jpeg');"></div>
+            <div class="hero-slide active" style="background-image: url('/benedetti-rent-a-car/assets/img/hero_barranquilla.png');"></div>
+            <div class="hero-slide" style="background-image: url('/benedetti-rent-a-car/assets/img/driving_one.jpeg');"></div>
             <div class="hero-slide" style="background-image: url('/benedetti-rent-a-car/assets/img/driving_two.jpeg');"></div>
-            <div class="hero-slide" style="background-image: url('/benedetti-rent-a-car/assets/img/Mazda_2_sedan.png');"></div>
         </div>
 
         <div class="hero-overlay"></div>
@@ -38,7 +38,7 @@ require_once __DIR__ . '/../views/partials/navbar.php';
             </div>
 
             <div class="hero-card animate-fade-right">
-                <img src="/benedetti-rent-a-car/assets/img/Mazda_2_sedan.png" alt="Mazda 2 Sedán" class="hero-car-image">
+                <img src="/benedetti-rent-a-car/assets/img/Mazda_2_sedan.png" alt="Vehículo Benedetti Rent a Car" class="hero-car-image">
                 <h3>Reserva rápida</h3>
                 <p>
                     Consulta disponibilidad, elige fechas y solicita tu vehículo
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
             slides[current].classList.remove('active');
             current = (current + 1) % slides.length;
             slides[current].classList.add('active');
-        }, 5000);
+        }, 7000);
     }
 
     const observer = new IntersectionObserver((entries) => {

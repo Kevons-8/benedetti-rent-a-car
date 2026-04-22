@@ -146,10 +146,10 @@ nav {
 ========================= */
 .hero {
     position: relative;
-    min-height: 78vh;
+    min-height: 82vh;
     display: flex;
     align-items: center;
-    padding: 60px 7%;
+    padding: 70px 7%;
     overflow: hidden;
     background: #061226;
 }
@@ -167,13 +167,17 @@ nav {
     background-size: cover;
     background-repeat: no-repeat;
     opacity: 0;
-    transform: scale(1.08);
-    transition: opacity 1.2s ease, transform 6s ease;
+    transform: scale(1.12);
+    transition:
+        opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 7s ease;
+    will-change: opacity, transform;
 }
 
 .hero-slide.active {
     opacity: 1;
     transform: scale(1);
+    animation: heroZoom 7s ease forwards;
 }
 
 .hero-overlay {
@@ -181,9 +185,9 @@ nav {
     inset: 0;
     background: linear-gradient(
         90deg,
-        rgba(5, 16, 37, 0.92) 0%,
-        rgba(5, 16, 37, 0.72) 50%,
-        rgba(5, 16, 37, 0.35) 100%
+        rgba(5, 16, 37, 0.82) 0%,
+        rgba(5, 16, 37, 0.58) 50%,
+        rgba(5, 16, 37, 0.22) 100%
     );
     z-index: 1;
 }
@@ -237,6 +241,7 @@ nav {
     line-height: 1.1;
     margin: 14px 0 18px;
     max-width: 650px;
+    text-shadow: 0 8px 24px rgba(0,0,0,0.20);
 }
 
 .hero-text p {
@@ -244,6 +249,7 @@ nav {
     line-height: 1.8;
     color: var(--text-soft);
     max-width: 600px;
+    text-shadow: 0 4px 16px rgba(0,0,0,0.18);
 }
 
 .hero-badge {
@@ -785,6 +791,15 @@ nav {
     }
 }
 
+@keyframes heroZoom {
+    0% {
+        transform: scale(1.08);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
 /* =========================
    RESPONSIVE
 ========================= */
@@ -903,7 +918,6 @@ nav {
 /* =========================
    RESERVA MEJORADA (UI PRO)
 ========================= */
-
 .reserva-title {
     font-size: 2.2rem;
     font-weight: 800;
@@ -928,7 +942,6 @@ nav {
     letter-spacing: 0.5px;
 }
 
-/* Inputs más modernos */
 .form-group input,
 .form-group select,
 .form-group textarea {
@@ -943,7 +956,6 @@ nav {
     box-shadow: 0 0 0 3px rgba(247, 198, 0, 0.15);
 }
 
-/* Sidebar vehículo */
 .vehiculo-resumen {
     overflow: hidden;
 }
@@ -958,7 +970,6 @@ nav {
     transform: scale(1.05);
 }
 
-/* Resumen visual */
 .reserva-resumen {
     background: linear-gradient(135deg, #0a1c35, #0d2445);
     border: 1px solid rgba(255,255,255,0.08);
@@ -972,13 +983,11 @@ nav {
     font-size: 0.95rem;
 }
 
-/* Total destacado */
 .reserva-total {
     font-size: 1.3rem;
     color: var(--accent);
 }
 
-/* Botón final más llamativo */
 .reserva-form-card .btn-primary {
     background: linear-gradient(135deg, #f7c600, #ffd84d);
     font-size: 1.05rem;
@@ -991,7 +1000,6 @@ nav {
 /* =========================
    HERO VEHÍCULOS
 ========================= */
-
 .vehicles-hero {
     position: relative;
     min-height: 55vh;
@@ -1033,7 +1041,6 @@ nav {
     line-height: 1.6;
 }
 
-/* Animación tarjetas */
 .hover-lift {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -1043,7 +1050,6 @@ nav {
     box-shadow: 0 18px 30px rgba(0,0,0,0.25);
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .vehicles-hero {
         min-height: 42vh;
