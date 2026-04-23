@@ -13,9 +13,14 @@
     --text-main: #ffffff;
     --text-soft: #d8e2f0;
     --text-soft-2: #cfd8e6;
-    --accent: #f7c600;
-    --accent-blue: #38bdf8;
-    --border-soft: rgba(255,255,255,0.08);
+    --border-soft: rgba(255, 255, 255, 0.08);
+    --yellow-soft: #ffd84d;
+}
+
+html,
+body {
+    width: 100%;
+    overflow-x: hidden;
 }
 
 body {
@@ -27,6 +32,7 @@ body {
 
 a {
     text-decoration: none;
+    color: inherit;
 }
 
 ul {
@@ -53,21 +59,21 @@ img {
     top: 0;
     left: 0;
     z-index: 1000;
-    background: rgba(5, 15, 35, 0.18);
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(5, 15, 35, 0.10);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 .site-header .nav {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 18px 7%;
+    padding: 16px 7%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    min-height: 72px;
+    min-height: 66px;
     gap: 20px;
 }
 
@@ -106,7 +112,7 @@ img {
 .logo-subtitle {
     font-size: 0.78rem;
     font-weight: 700;
-    color: var(--accent);
+    color: var(--yellow-soft);
     text-transform: uppercase;
     letter-spacing: 0.8px;
     margin-top: 4px;
@@ -133,12 +139,12 @@ nav {
     color: #ffffff;
     font-weight: 500;
     font-size: 1rem;
-    transition: color 0.3s ease, opacity 0.3s ease;
+    transition: color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
 }
 
 .nav-links a:hover {
-    color: var(--accent);
-    opacity: 1;
+    opacity: 0.85;
+    transform: translateY(-1px);
 }
 
 /* =========================
@@ -155,7 +161,7 @@ nav {
     background-size: cover;
     background-repeat: no-repeat;
     background-color: #061226;
-    animation: heroZoomStatic 18s ease-in-out infinite alternate;
+    background-attachment: fixed;
 }
 
 .hero-overlay {
@@ -163,9 +169,9 @@ nav {
     inset: 0;
     background: linear-gradient(
         90deg,
-        rgba(5, 16, 37, 0.56) 0%,
-        rgba(5, 16, 37, 0.32) 45%,
-        rgba(5, 16, 37, 0.16) 100%
+        rgba(5, 16, 37, 0.44) 0%,
+        rgba(5, 16, 37, 0.22) 45%,
+        rgba(5, 16, 37, 0.08) 100%
     );
     z-index: 1;
 }
@@ -180,29 +186,30 @@ nav {
     min-height: 100vh;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 150px 7% 90px;
+    padding: 140px 7% 140px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: flex-start;
 }
 
-.hero-text,
-.hero-card {
+.hero-text {
     position: relative;
     z-index: 2;
+    max-width: 760px;
 }
 
 .hero-badge {
     display: inline-block;
     padding: 10px 16px;
     border-radius: 999px;
-    border: 1px solid rgba(255,255,255,0.16);
-    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(10px);
     font-size: 0.92rem;
     margin-bottom: 14px;
     color: #ffffff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.10);
 }
 
 .hero-text h1 {
@@ -210,7 +217,7 @@ nav {
     line-height: 1.05;
     margin: 0 0 18px;
     max-width: 760px;
-    text-shadow: 0 8px 24px rgba(0,0,0,0.24);
+    text-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
 }
 
 .hero-text p {
@@ -218,7 +225,7 @@ nav {
     line-height: 1.8;
     color: var(--text-soft);
     max-width: 700px;
-    text-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    text-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
 }
 
 .hero-buttons {
@@ -228,45 +235,185 @@ nav {
     margin-top: 28px;
 }
 
-.hero-card {
-    display: none;
+/* =========================
+   SEGUNDA SECCIÓN
+========================= */
+.home-showcase-overlap {
+    position: relative;
+    margin-top: -30px;
+    padding: 0 7% 70px;
+    z-index: 3;
+}
+
+.home-showcase-card {
+    position: relative;
+    border-radius: 28px;
+    padding: 42px 36px;
+    background:
+        linear-gradient(rgba(4, 12, 24, 0.72), rgba(4, 12, 24, 0.86)),
+        url("/benedetti-rent-a-car/assets/img/malecon_nocturno.jpg") center center / cover no-repeat;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
+    overflow: hidden;
+}
+
+.section-header {
+    margin-bottom: 30px;
+}
+
+.section-header h2 {
+    font-size: 2.2rem;
+    margin-bottom: 12px;
+}
+
+.section-header p {
+    color: var(--text-soft-2);
+    font-size: 1rem;
+}
+
+.section-header-light h2 {
+    color: #ffffff;
+}
+
+.section-header-light p {
+    color: #f1f5f9;
 }
 
 /* =========================
-   BOTONES
+   BOTONES VERDES BRILLANTES
 ========================= */
 .btn {
-    padding: 14px 24px;
-    border-radius: 12px;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    display: inline-block;
-    cursor: pointer;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 56px;
+    padding: 14px 30px;
+    border-radius: 999px;
     border: none;
     font-size: 0.98rem;
+    font-weight: 700;
+    letter-spacing: 0.2px;
     text-align: center;
+    cursor: pointer;
+    overflow: hidden;
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        filter 0.22s ease,
+        background 0.22s ease;
+}
+
+.btn span {
+    position: relative;
+    z-index: 2;
+}
+
+.btn-icon {
+    font-size: 1rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn::before {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    border-radius: inherit;
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.35) 0%,
+        rgba(255, 255, 255, 0.10) 35%,
+        rgba(255, 255, 255, 0.02) 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+}
+
+.btn::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -35%;
+    width: 30%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.42) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-22deg);
+    transition: left 0.55s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.btn:hover::after {
+    left: 120%;
 }
 
 .btn-primary {
-    background: var(--accent);
-    color: #111;
-    box-shadow: 0 10px 25px rgba(247, 198, 0, 0.28);
+    color: #ffffff;
+    background: linear-gradient(
+        180deg,
+        #6eff1f 0%,
+        #38d600 45%,
+        #19a500 100%
+    );
+    box-shadow:
+        inset 0 2px 0 rgba(255, 255, 255, 0.35),
+        inset 0 -3px 0 rgba(0, 0, 0, 0.18),
+        0 6px 14px rgba(42, 205, 0, 0.35),
+        0 0 14px rgba(106, 255, 31, 0.30);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.18);
 }
 
 .btn-primary:hover {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
+    filter: brightness(1.06);
+    box-shadow:
+        inset 0 2px 0 rgba(255, 255, 255, 0.38),
+        inset 0 -3px 0 rgba(0, 0, 0, 0.18),
+        0 10px 18px rgba(42, 205, 0, 0.40),
+        0 0 18px rgba(106, 255, 31, 0.38);
 }
 
 .btn-secondary {
-    border: 1px solid rgba(247, 198, 0, 0.78);
-    color: white;
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(12px);
+    color: #ffffff;
+    background: linear-gradient(
+        180deg,
+        #45f07b 0%,
+        #1fc95c 45%,
+        #0d9b3f 100%
+    );
+    box-shadow:
+        inset 0 2px 0 rgba(255, 255, 255, 0.32),
+        inset 0 -3px 0 rgba(0, 0, 0, 0.18),
+        0 6px 14px rgba(17, 163, 68, 0.35),
+        0 0 14px rgba(69, 240, 123, 0.26);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.18);
 }
 
 .btn-secondary:hover {
-    transform: translateY(-3px);
-    background: rgba(255,255,255,0.10);
+    transform: translateY(-2px);
+    filter: brightness(1.06);
+    box-shadow:
+        inset 0 2px 0 rgba(255, 255, 255, 0.35),
+        inset 0 -3px 0 rgba(0, 0, 0, 0.18),
+        0 10px 18px rgba(17, 163, 68, 0.40),
+        0 0 18px rgba(69, 240, 123, 0.34);
+}
+
+.btn:active {
+    transform: translateY(1px) scale(0.985);
+    box-shadow:
+        inset 0 2px 0 rgba(255, 255, 255, 0.25),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.22),
+        0 3px 8px rgba(0, 0, 0, 0.22);
 }
 
 .btn-disabled {
@@ -298,20 +445,6 @@ nav {
     color: #ffffff;
 }
 
-.section-header {
-    margin-bottom: 30px;
-}
-
-.section-header h2 {
-    font-size: 2.2rem;
-    margin-bottom: 12px;
-}
-
-.section-header p {
-    color: var(--text-soft-2);
-    font-size: 1rem;
-}
-
 .catalogo-texto {
     color: var(--text-soft);
     font-size: 1.05rem;
@@ -329,15 +462,16 @@ nav {
 }
 
 .card {
-    background: var(--bg-card);
-    border: 1px solid rgba(255,255,255,0.06);
+    background: rgba(19, 35, 63, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.10);
     border-radius: 18px;
     padding: 22px;
-    box-shadow: 0 10px 22px rgba(0,0,0,0.16);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.20);
+    backdrop-filter: blur(8px);
 }
 
 .card h3 {
-    color: var(--accent);
+    color: #22c55e;
     margin-bottom: 10px;
     font-size: 1.2rem;
 }
@@ -353,15 +487,15 @@ nav {
 
 .hover-lift:hover {
     transform: translateY(-10px);
-    box-shadow: 0 18px 30px rgba(0,0,0,0.25);
+    box-shadow: 0 18px 30px rgba(0, 0, 0, 0.25);
 }
 
 /* =========================
    CTA
 ========================= */
 .cta-box {
-    background: linear-gradient(135deg, rgba(247,198,0,0.12), rgba(255,255,255,0.05));
-    border: 1px solid rgba(255,255,255,0.08);
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.12), rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 22px;
     padding: 30px;
     text-align: center;
@@ -392,13 +526,13 @@ nav {
     background: var(--bg-card);
     border-radius: 20px;
     overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.06);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .vehiculo-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 18px 30px rgba(0,0,0,0.25);
+    box-shadow: 0 18px 30px rgba(0, 0, 0, 0.25);
 }
 
 .vehiculo-img {
@@ -412,7 +546,7 @@ nav {
 }
 
 .vehiculo-info h3 {
-    color: var(--accent);
+    color: #22c55e;
     margin-bottom: 10px;
     font-size: 1.5rem;
 }
@@ -425,7 +559,7 @@ nav {
 }
 
 .precio {
-    color: var(--accent);
+    color: #22c55e;
     font-weight: bold;
     font-size: 1.15rem;
     margin-top: 12px;
@@ -476,10 +610,10 @@ nav {
 
 .form-reserva {
     background: var(--bg-card-2);
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 20px;
     padding: 24px;
-    box-shadow: 0 18px 35px rgba(0,0,0,0.18);
+    box-shadow: 0 18px 35px rgba(0, 0, 0, 0.18);
 }
 
 .form-grid {
@@ -531,15 +665,15 @@ nav {
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(247, 198, 0, 0.12);
+    border-color: #22c55e;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.14);
 }
 
 .form-section-title {
     grid-column: 1 / -1;
     font-size: 1.05rem;
     font-weight: 700;
-    color: var(--accent-blue);
+    color: #22c55e;
     margin-top: 8px;
     margin-bottom: 2px;
     padding-bottom: 8px;
@@ -571,7 +705,7 @@ nav {
 
 .total-destacado {
     font-size: 1.15rem;
-    color: var(--accent-blue);
+    color: #22c55e;
     font-weight: 700;
 }
 
@@ -579,8 +713,8 @@ nav {
 .form-reserva button[type="submit"] {
     width: 100%;
     margin-top: 20px;
-    background: linear-gradient(135deg, #f7c600, #ffd84d);
-    color: #111;
+    background: linear-gradient(180deg, #6eff1f 0%, #38d600 45%, #19a500 100%);
+    color: #ffffff;
     border: none;
     padding: 15px 18px;
     border-radius: 14px;
@@ -588,21 +722,21 @@ nav {
     font-weight: 700;
     cursor: pointer;
     transition: all 0.25s ease;
-    box-shadow: 0 10px 22px rgba(247, 198, 0, 0.20);
+    box-shadow: 0 10px 22px rgba(34, 197, 94, 0.20);
 }
 
 .form-reserva .btn-primary:hover,
 .form-reserva button[type="submit"]:hover {
     transform: translateY(-2px);
-    box-shadow: 0 14px 30px rgba(247, 198, 0, 0.28);
+    box-shadow: 0 14px 30px rgba(34, 197, 94, 0.30);
 }
 
 /* =========================
    CONTACTO
 ========================= */
 .contact-box {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     padding: 28px;
     border-radius: 18px;
     max-width: 650px;
@@ -617,8 +751,8 @@ nav {
    PLACEHOLDER / MENSAJES
 ========================= */
 .placeholder-box {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     padding: 20px;
     border-radius: 18px;
     color: #e5eef9;
@@ -652,7 +786,7 @@ nav {
     text-align: center;
     padding: 20px;
     background: #04101f;
-    border-top: 1px solid rgba(255,255,255,0.08);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .site-footer p {
@@ -673,15 +807,6 @@ nav {
 .animate-on-scroll.visible {
     opacity: 1;
     transform: translateY(0);
-}
-
-@keyframes heroZoomStatic {
-    0% {
-        background-size: 100%;
-    }
-    100% {
-        background-size: 106%;
-    }
 }
 
 /* =========================
@@ -705,15 +830,25 @@ nav {
     .hero-static-banner {
         min-height: 78vh;
         background-size: cover;
-        animation: none;
+        background-attachment: scroll;
     }
 
     .hero-content {
-        padding: 140px 7% 70px;
+        min-height: 78vh;
+        padding: 140px 7% 100px;
     }
 
     .hero-text h1 {
         font-size: 3rem;
+    }
+
+    .home-showcase-overlap {
+        margin-top: 0;
+        padding: 30px 7% 60px;
+    }
+
+    .home-showcase-card {
+        padding: 38px 28px;
     }
 
     .reserva-layout {
@@ -758,11 +893,12 @@ nav {
         min-height: 70vh;
         background-position: center top;
         background-size: cover;
+        background-attachment: scroll;
     }
 
     .hero-content {
         min-height: 70vh;
-        padding: 150px 5% 60px;
+        padding: 150px 5% 90px;
     }
 
     .hero-text h1 {
@@ -783,6 +919,16 @@ nav {
         width: 100%;
     }
 
+    .home-showcase-overlap {
+        margin-top: 0;
+        padding: 24px 5% 50px;
+    }
+
+    .home-showcase-card {
+        padding: 28px 20px;
+        border-radius: 22px;
+    }
+
     .section-header h2,
     .page-section h1,
     .cta-box h2 {
@@ -800,155 +946,5 @@ nav {
     .vehicle-grid,
     .benefits-grid {
         grid-template-columns: 1fr;
-    }
-}
-
-/* =========================
-   RESERVA MEJORADA (UI PRO)
-========================= */
-.reserva-title {
-    font-size: 2.2rem;
-    font-weight: 800;
-    margin-bottom: 28px;
-}
-
-.reserva-form-card {
-    animation: fadeUp 0.8s ease;
-}
-
-.reserva-block {
-    transition: all 0.3s ease;
-}
-
-.reserva-block:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 25px rgba(0,0,0,0.25);
-}
-
-.reserva-block-title {
-    color: var(--accent);
-    letter-spacing: 0.5px;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-    background: #0b1b36;
-    border: 1px solid rgba(255,255,255,0.08);
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(247, 198, 0, 0.15);
-}
-
-.vehiculo-resumen {
-    overflow: hidden;
-}
-
-.vehiculo-resumen img {
-    border-radius: 14px;
-    margin-bottom: 12px;
-    transition: transform 0.4s ease;
-}
-
-.vehiculo-resumen:hover img {
-    transform: scale(1.05);
-}
-
-.reserva-resumen {
-    background: linear-gradient(135deg, #0a1c35, #0d2445);
-    border: 1px solid rgba(255,255,255,0.08);
-}
-
-.reserva-resumen h3 {
-    color: var(--accent);
-}
-
-.reserva-resumen p {
-    font-size: 0.95rem;
-}
-
-.reserva-total {
-    font-size: 1.3rem;
-    color: var(--accent);
-}
-
-.reserva-form-card .btn-primary {
-    background: linear-gradient(135deg, #f7c600, #ffd84d);
-    font-size: 1.05rem;
-}
-
-.reserva-form-card .btn-primary:hover {
-    transform: translateY(-3px) scale(1.02);
-}
-
-/* =========================
-   HERO VEHÍCULOS
-========================= */
-.vehicles-hero {
-    position: relative;
-    min-height: 55vh;
-    display: flex;
-    align-items: center;
-    padding: 120px 7% 60px;
-    background: url("/benedetti-rent-a-car/assets/img/driving_two.jpg") center center / cover no-repeat;
-    overflow: hidden;
-}
-
-.vehicles-hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        90deg,
-        rgba(5, 16, 37, 0.78) 0%,
-        rgba(5, 16, 37, 0.58) 50%,
-        rgba(5, 16, 37, 0.28) 100%
-    );
-    z-index: 1;
-}
-
-.vehicles-hero-content {
-    position: relative;
-    z-index: 2;
-    max-width: 700px;
-    animation: fadeUp 1s ease;
-}
-
-.vehicles-hero-content h1 {
-    font-size: clamp(2rem, 4vw, 3rem);
-    margin-bottom: 16px;
-    color: #ffffff;
-}
-
-.vehicles-hero-content p {
-    color: var(--text-soft);
-    font-size: 1.05rem;
-    line-height: 1.6;
-}
-
-.hover-lift {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.hover-lift:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 18px 30px rgba(0,0,0,0.25);
-}
-
-@media (max-width: 768px) {
-    .vehicles-hero {
-        min-height: 42vh;
-        padding: 110px 5% 45px;
-    }
-
-    .vehicles-hero-content h1 {
-        font-size: 2rem;
-    }
-
-    .vehicles-hero-content p {
-        font-size: 1rem;
     }
 }
