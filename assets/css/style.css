@@ -948,3 +948,258 @@ nav {
         grid-template-columns: 1fr;
     }
 }
+
+/* =========================
+   HERO VEHÍCULOS NUEVO
+========================= */
+.vehicles-hero {
+    position: relative;
+    min-height: 55vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 7% 70px;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+.vehicles-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        rgba(4, 12, 24, 0.80) 0%,
+        rgba(4, 12, 24, 0.55) 45%,
+        rgba(4, 12, 24, 0.25) 100%
+    );
+    z-index: 1;
+}
+
+.vehicles-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 760px;
+}
+
+.vehicles-badge {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    color: #ffffff;
+    font-size: 0.92rem;
+    margin-bottom: 14px;
+}
+
+.vehicles-hero-content h1 {
+    font-size: clamp(2.2rem, 4vw, 4rem);
+    line-height: 1.08;
+    margin-bottom: 16px;
+    color: #ffffff;
+    text-shadow: 0 10px 24px rgba(0,0,0,0.25);
+}
+
+.vehicles-hero-content p {
+    font-size: 1.08rem;
+    line-height: 1.8;
+    color: #d8e2f0;
+    max-width: 650px;
+    text-shadow: 0 4px 14px rgba(0,0,0,0.18);
+}
+
+/* =========================
+   SECCIÓN VEHÍCULOS CON FONDO
+========================= */
+.vehicles-page-section {
+    position: relative;
+    padding: 70px 7%;
+    background-image: url("/benedetti-rent-a-car/assets/img/fondo_vehiculos.png");
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+.vehicles-section-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(6, 18, 38, 0.82) 0%,
+        rgba(6, 18, 38, 0.90) 55%,
+        rgba(6, 18, 38, 0.96) 100%
+    );
+    z-index: 1;
+}
+
+.vehicles-section-content {
+    position: relative;
+    z-index: 2;
+}
+
+.vehicles-header h1 {
+    color: #ffffff;
+    margin-bottom: 14px;
+}
+
+.vehicles-header .catalogo-texto {
+    color: #d8e2f0;
+    max-width: 780px;
+}
+
+/* =========================
+   GRID PREMIUM
+========================= */
+.vehicle-grid-premium {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+}
+
+.vehiculo-card-premium {
+    background: rgba(19, 35, 63, 0.92);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 18px 34px rgba(0,0,0,0.20);
+    backdrop-filter: blur(10px);
+}
+
+.vehiculo-img-wrap {
+    position: relative;
+    overflow: hidden;
+}
+
+.vehiculo-card-premium .vehiculo-img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    transition: transform 0.45s ease;
+}
+
+.vehiculo-card-premium:hover .vehiculo-img {
+    transform: scale(1.05);
+}
+
+.vehiculo-badge-top {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: rgba(247, 198, 0, 0.92);
+    color: #111;
+    font-size: 0.84rem;
+    font-weight: 700;
+    padding: 8px 12px;
+    border-radius: 999px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.16);
+}
+
+.vehiculo-info-premium {
+    padding: 22px;
+}
+
+.vehiculo-info-premium h3 {
+    color: #ffffff;
+    font-size: 1.45rem;
+    margin-bottom: 14px;
+}
+
+.vehiculo-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.vehiculo-meta span {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #d8e2f0;
+    font-size: 0.85rem;
+}
+
+.vehiculo-info-premium p {
+    color: #d6dfeb;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    font-size: 0.96rem;
+}
+
+.vehiculo-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 18px;
+}
+
+.vehiculo-footer .precio {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #f7c600;
+}
+
+.vehiculo-footer .precio span {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #d8e2f0;
+}
+
+.vehiculo-footer .btn {
+    min-width: 140px;
+    text-align: center;
+}
+
+/* =========================
+   RESPONSIVE VEHÍCULOS
+========================= */
+@media (max-width: 992px) {
+    .vehicles-hero {
+        min-height: 46vh;
+        padding: 110px 7% 60px;
+    }
+
+    .vehicle-grid-premium {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .vehicles-hero {
+        min-height: 42vh;
+        padding: 100px 5% 50px;
+    }
+
+    .vehicles-hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .vehicles-hero-content p {
+        font-size: 1rem;
+    }
+
+    .vehicles-page-section {
+        padding: 55px 5%;
+    }
+
+    .vehicle-grid-premium {
+        grid-template-columns: 1fr;
+    }
+
+    .vehiculo-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .vehiculo-footer .btn {
+        width: 100%;
+    }
+}

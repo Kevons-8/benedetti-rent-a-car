@@ -61,24 +61,93 @@ function generarOpcionesHora(): string
 
 $precioDia = $vehiculo ? (float)$vehiculo['precio_dia'] : 0;
 $precioHoraExtra = ($vehiculo && !empty($vehiculo['precio_hora_extra'])) ? (float)$vehiculo['precio_hora_extra'] : 0;
-
-/*
-|--------------------------------------------------------------------------
-| CONFIGURACION INTERNA
-|--------------------------------------------------------------------------
-| Este valor NO lo edita el cliente.
-| Si la devolucion es "otro lugar", este valor se aplica desde codigo.
-*/
 $costoDevolucionOtroFijo = 0;
 ?>
 
 <style>
+.reserva-hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 150px 7% 150px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(4, 18, 38, 0.78) 0%,
+            rgba(4, 18, 38, 0.58) 42%,
+            rgba(4, 18, 38, 0.28) 100%
+        ),
+        url('/benedetti-rent-a-car/assets/img/reservas_marimondas.jpg') center center / cover no-repeat;
+    overflow: hidden;
+}
+
+.reserva-hero::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 220px;
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(6, 18, 38, 0.96)
+    );
+    z-index: 1;
+}
+
+.reserva-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 780px;
+}
+
+.reserva-badge {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(10px);
+    color: #ffffff;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+}
+
+.reserva-hero-content h1 {
+    font-size: clamp(2.3rem, 4vw, 4.2rem);
+    line-height: 1.08;
+    margin-bottom: 18px;
+    color: #ffffff;
+    text-shadow: 0 10px 26px rgba(0,0,0,0.30);
+}
+
+.reserva-hero-content p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #e5edf7;
+    max-width: 680px;
+    text-shadow: 0 4px 14px rgba(0,0,0,0.22);
+}
+
 .reserva-page {
-    padding-top: 20px;
+    position: relative;
+    margin-top: -130px;
+    padding: 0 7% 80px;
+    background: #061226;
+    z-index: 3;
+}
+
+.reserva-page .container {
+    position: relative;
+    z-index: 2;
 }
 
 .reserva-title {
     margin-bottom: 24px;
+    color: #ffffff;
+    font-size: 2.4rem;
 }
 
 .reserva-layout-pro {
@@ -93,20 +162,52 @@ $costoDevolucionOtroFijo = 0;
     top: 110px;
 }
 
+.reserva-vehiculo-card {
+    background: rgba(19, 35, 63, 0.78);
+    border-radius: 22px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow: 0 22px 48px rgba(0,0,0,0.34);
+    backdrop-filter: blur(14px);
+}
+
+.reserva-vehiculo-card .vehiculo-img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+}
+
+.reserva-vehiculo-card .vehiculo-info {
+    padding: 20px;
+}
+
+.reserva-vehiculo-card .vehiculo-info h3 {
+    color: #ffffff;
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+}
+
+.reserva-vehiculo-card .vehiculo-info p {
+    color: #d8e2f0;
+    margin-bottom: 8px;
+}
+
 .reserva-form-card {
-    background: #1a2740;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 20px;
-    padding: 24px;
-    box-shadow: 0 18px 35px rgba(0,0,0,0.18);
+    background: rgba(26, 39, 64, 0.76);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 24px;
+    padding: 26px;
+    box-shadow: 0 26px 70px rgba(0,0,0,0.36);
+    backdrop-filter: blur(16px);
 }
 
 .reserva-block {
-    background: #1e2d47;
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 16px;
+    background: rgba(30, 45, 71, 0.72);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 18px;
     padding: 18px;
     margin-bottom: 18px;
+    backdrop-filter: blur(10px);
 }
 
 .reserva-block-title {
@@ -115,7 +216,7 @@ $costoDevolucionOtroFijo = 0;
     color: #ffffff;
     margin-bottom: 14px;
     padding-bottom: 8px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.10);
 }
 
 .reserva-grid-2 {
@@ -146,10 +247,10 @@ $costoDevolucionOtroFijo = 0;
 .form-group select,
 .form-group textarea {
     width: 100%;
-    background: #08152d;
+    background: rgba(8, 21, 45, 0.92);
     color: #ffffff;
-    border: 1px solid #3a4b66;
-    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
     padding: 12px 14px;
     font-size: 0.95rem;
     transition: all 0.25s ease;
@@ -170,18 +271,20 @@ $costoDevolucionOtroFijo = 0;
 .form-group textarea:focus {
     outline: none;
     border-color: #f7c600;
-    box-shadow: 0 0 0 3px rgba(247, 198, 0, 0.12);
+    box-shadow: 0 0 0 3px rgba(247, 198, 0, 0.14);
 }
 
 .reserva-resumen {
-    background: #08152d;
-    border: 1px solid #2c3e5d;
-    border-radius: 16px;
-    padding: 18px;
+    background: rgba(8, 21, 45, 0.92);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 18px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
 }
 
 .reserva-resumen h3 {
     margin-bottom: 12px;
+    color: #ffffff;
 }
 
 .reserva-resumen p {
@@ -191,17 +294,17 @@ $costoDevolucionOtroFijo = 0;
 }
 
 .reserva-total {
-    font-size: 1.18rem;
+    font-size: 1.22rem;
     font-weight: 700;
     color: #38bdf8;
 }
 
 .reserva-form-card .btn-primary {
     width: 100%;
-    margin-top: 8px;
+    margin-top: 12px;
     border: none;
-    border-radius: 12px;
-    padding: 14px 18px;
+    border-radius: 16px;
+    padding: 15px 18px;
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
@@ -228,6 +331,15 @@ $costoDevolucionOtroFijo = 0;
     .reserva-sidebar {
         position: static;
     }
+
+    .reserva-hero {
+        min-height: 78vh;
+        padding: 130px 7% 140px;
+    }
+
+    .reserva-page {
+        margin-top: -90px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -236,16 +348,50 @@ $costoDevolucionOtroFijo = 0;
     }
 
     .reserva-form-card {
-        padding: 16px;
+        padding: 18px;
     }
 
     .reserva-block {
-        padding: 14px;
+        padding: 15px;
+    }
+
+    .reserva-hero {
+        min-height: 70vh;
+        padding: 120px 5% 130px;
+        background-position: center center;
+    }
+
+    .reserva-hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .reserva-hero-content p {
+        font-size: 1rem;
+    }
+
+    .reserva-page {
+        margin-top: -80px;
+        padding: 0 5% 60px;
+    }
+
+    .reserva-title {
+        font-size: 2rem;
     }
 }
 </style>
 
-<main class="page-section reserva-page">
+<section class="reserva-hero">
+    <div class="container reserva-hero-content">
+        <span class="reserva-badge">Reserva tu experiencia en Barranquilla</span>
+        <h1>Reserva tu vehículo de forma fácil y segura</h1>
+        <p>
+            Completa tu solicitud en pocos pasos y prepárate para recorrer Barranquilla con comodidad,
+            respaldo y el espíritu alegre de la ciudad.
+        </p>
+    </div>
+</section>
+
+<main class="reserva-page">
     <div class="container">
         <h1 class="reserva-title">Formulario de reserva</h1>
 
@@ -259,7 +405,7 @@ $costoDevolucionOtroFijo = 0;
             <div class="reserva-layout-pro">
 
                 <aside class="reserva-sidebar">
-                    <div class="vehiculo-card vehiculo-resumen">
+                    <div class="reserva-vehiculo-card">
                         <?php if (!empty($vehiculo['imagen'])): ?>
                             <img
                                 src="/benedetti-rent-a-car/assets/img/<?php echo htmlspecialchars($vehiculo['imagen']); ?>"
@@ -413,7 +559,8 @@ $costoDevolucionOtroFijo = 0;
                             <label class="checkbox-line">
                                 <input type="checkbox" name="acepta_datos" value="1" required>
                                 <span>
-                                    Acepto el tratamiento de mis datos personales conforme a la política de privacidad de Benedetti Rent a Car. Autorizo que mis datos sean almacenados para gestionar esta solicitud de reserva y futuras reservas, de acuerdo con la normativa aplicable de protección de datos.
+                                    Acepto el tratamiento de mis datos personales conforme a la política de privacidad de Benedetti Rent a Car.
+                                    Autorizo que mis datos sean almacenados para gestionar esta solicitud de reserva y futuras reservas.
                                 </span>
                             </label>
                         </div>
@@ -429,27 +576,6 @@ $costoDevolucionOtroFijo = 0;
                         <p><strong>Costo de devolución:</strong> $<span id="costo-devolucion">0</span></p>
                         <p><strong>Costo por distancia:</strong> $<span id="costo-km">0</span></p>
                         <p class="reserva-total"><strong>Total estimado:</strong> $<span id="total-estimado">0</span></p>
-
-                        <hr style="margin: 15px 0; border-color: #334155;">
-
-                        <p><strong>Política de pago</strong></p>
-                        <p>• En esta primera pantalla solo registras tu solicitud de reserva.</p>
-                        <p>• En la siguiente pantalla el sistema verificará si eres cliente nuevo, referido o recurrente.</p>
-                        <p>• Allí se te mostrarán únicamente los métodos de pago que Benedetti Rent a Car tenga habilitados para tu perfil.</p>
-
-                        <hr style="margin: 15px 0; border-color: #334155;">
-
-                        <p><strong>Política de entrega y devolución</strong></p>
-                        <p>• Puedes seleccionar aeropuerto, oficina u otro lugar.</p>
-                        <p>• Si seleccionas "Otro lugar" en entrega, podrás escribir la dirección y definir un costo manual temporal.</p>
-                        <p>• El costo de devolución en "otro lugar" se define internamente por Benedetti Rent a Car.</p>
-
-                        <hr style="margin: 15px 0; border-color: #334155;">
-
-                        <p><strong>Política de devolución tardía / tiempo adicional</strong></p>
-                        <p>• Hasta 1 hora de gracia: sin cobro.</p>
-                        <p>• Desde 2 hasta 4 horas adicionales: se cobra valor por hora extra.</p>
-                        <p>• Desde la 5ta hora adicional: se cobra 1 día completo adicional.</p>
                     </section>
 
                     <button type="submit" class="btn btn-primary">Continuar reserva</button>
@@ -588,9 +714,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let recargoHoras = 0;
         let total = diasBase * precioDia;
 
-        if (horasAdicionales === 0) {
-            recargoHoras = 0;
-        } else if (horasAdicionales === 1) {
+        if (horasAdicionales === 1) {
             recargoHoras = 0;
         } else if (horasAdicionales >= 2 && horasAdicionales <= 4) {
             recargoHoras = horasAdicionales * precioHoraExtra;
@@ -612,7 +736,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     lugarEntrega.addEventListener('change', controlarCamposOtroLugar);
     lugarDevolucion.addEventListener('change', controlarCamposOtroLugar);
-
     costoEntregaManual.addEventListener('input', calcularResumen);
 
     fechaInicio.addEventListener('change', calcularResumen);
