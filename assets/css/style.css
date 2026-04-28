@@ -1203,3 +1203,62 @@ nav {
         width: 100%;
     }
 }
+
+/* =========================
+   FONDO PRO SOLO PARA RESERVA
+========================= */
+
+body:has(.reserva-layout) .page-section {
+    position: relative;
+    min-height: 100vh;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(6, 18, 38, 0.72) 0%,
+            rgba(6, 18, 38, 0.82) 55%,
+            rgba(6, 18, 38, 0.94) 100%
+        ),
+        url("/benedetti-rent-a-car/assets/img/reservas_marimondas.jpg") center center / cover no-repeat fixed;
+
+    z-index: 1;
+}
+
+/* Mantiene el formulario tal como está */
+body:has(.reserva-layout) .reserva-layout,
+body:has(.reserva-layout) .form-reserva,
+body:has(.reserva-layout) .vehiculo-resumen {
+    position: relative;
+    z-index: 2;
+}
+
+/* =========================
+   FONDO PRO RESERVA (VERSIÓN FINAL)
+========================= */
+
+.reserva-page-custom .page-section {
+    position: relative;
+    min-height: 100vh;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(6, 18, 38, 0.72) 0%,
+            rgba(6, 18, 38, 0.82) 55%,
+            rgba(6, 18, 38, 0.94) 100%
+        ),
+        url("/benedetti-rent-a-car/assets/img/reservas_marimondas.jpg") center center / cover no-repeat fixed;
+
+    background-size: cover;
+    background-position: center;
+
+    z-index: 1;
+}
+
+/* Mantiene el formulario intacto */
+.reserva-page-custom .reserva-layout,
+.reserva-page-custom .form-reserva,
+.reserva-page-custom .vehiculo-resumen {
+    position: relative;
+    z-index: 2;
+}

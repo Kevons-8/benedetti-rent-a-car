@@ -103,7 +103,21 @@ function formatearEstado(string $valor = null): string
 
 <style>
 .pago-page {
+    position: relative;
+    min-height: 100vh;
     padding-top: 20px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(6, 18, 38, 0.72) 0%,
+            rgba(6, 18, 38, 0.84) 55%,
+            rgba(6, 18, 38, 0.96) 100%
+        ),
+        url("/benedetti-rent-a-car/assets/img/pumarejo_nuevo.png") center center / cover no-repeat fixed;
+
+    background-size: cover;
+    background-position: center;
 }
 
 .pago-title {
@@ -130,7 +144,6 @@ function formatearEstado(string $valor = null): string
     border-radius: 20px;
     padding: 24px;
     box-shadow: 0 18px 35px rgba(0,0,0,0.18);
-    animation: fadeUp 0.8s ease;
 }
 
 .pago-block {
@@ -273,6 +286,10 @@ function formatearEstado(string $valor = null): string
 }
 
 @media (max-width: 768px) {
+    .pago-page {
+        background-attachment: scroll;
+    }
+
     .metodos-grid {
         grid-template-columns: 1fr;
     }

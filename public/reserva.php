@@ -135,8 +135,26 @@ $costoDevolucionOtroFijo = 0;
     position: relative;
     margin-top: -130px;
     padding: 0 7% 80px;
-    background: #061226;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(6, 18, 38, 0.88) 0%,
+            rgba(6, 18, 38, 0.76) 45%,
+            rgba(6, 18, 38, 0.92) 100%
+        ),
+        url('/benedetti-rent-a-car/assets/img/reservas_marimondas.jpg') center center / cover no-repeat fixed;
     z-index: 3;
+}
+
+.reserva-page::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.13), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(247, 198, 0, 0.08), transparent 36%);
+    pointer-events: none;
+    z-index: 1;
 }
 
 .reserva-page .container {

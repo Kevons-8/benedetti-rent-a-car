@@ -24,7 +24,13 @@ require_once __DIR__ . '/../views/partials/navbar.php';
                         <span>Reservar vehículo</span>
                     </a>
 
-                    <a href="https://wa.me/573001234567" target="_blank" class="btn btn-secondary">
+                    <!-- BOTÓN WHATSAPP PRINCIPAL -->
+                    <a 
+                        href="https://wa.me/573153472438?text=Hola,%20estoy%20interesado%20en%20alquilar%20un%20vehículo%20en%20Barranquilla.%20¿Me%20pueden%20ayudar?"
+                        target="_blank" 
+                        class="btn btn-secondary"
+                        onclick="registrarClickWhatsapp()"
+                    >
                         <span class="btn-icon">💬</span>
                         <span>WhatsApp</span>
                     </a>
@@ -86,6 +92,18 @@ require_once __DIR__ . '/../views/partials/navbar.php';
 
 </main>
 
+<!-- BOTÓN FLOTANTE WHATSAPP PRO -->
+<a 
+    href="https://wa.me/573153472438?text=Hola,%20estoy%20interesado%20en%20alquilar%20un%20vehículo%20en%20Barranquilla.%20¿Me%20pueden%20ayudar?"
+    class="whatsapp-float"
+    target="_blank"
+    aria-label="Contactar por WhatsApp"
+    onclick="registrarClickWhatsapp()"
+>
+    <span class="whatsapp-icon">💬</span>
+    <span class="whatsapp-text">¿Necesitas ayuda?</span>
+</a>
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const observer = new IntersectionObserver((entries) => {
@@ -102,6 +120,15 @@ document.addEventListener('DOMContentLoaded', function () {
         observer.observe(el);
     });
 });
+
+/* TRACKING DE CLICS */
+function registrarClickWhatsapp() {
+    let clicks = localStorage.getItem("clicksWhatsappBenedetti") || 0;
+    clicks++;
+    localStorage.setItem("clicksWhatsappBenedetti", clicks);
+
+    console.log("Clics en WhatsApp Benedetti Rent a Car:", clicks);
+}
 </script>
 
 <?php
