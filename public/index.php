@@ -23,17 +23,6 @@ require_once __DIR__ . '/../views/partials/navbar.php';
                         <span class="btn-icon">🚗</span>
                         <span>Reservar vehículo</span>
                     </a>
-
-                    <!-- BOTÓN WHATSAPP PRINCIPAL -->
-                    <a 
-                        href="https://wa.me/573153472438?text=Hola,%20estoy%20interesado%20en%20alquilar%20un%20vehículo%20en%20Barranquilla.%20¿Me%20pueden%20ayudar?"
-                        target="_blank" 
-                        class="btn btn-secondary"
-                        onclick="registrarClickWhatsapp()"
-                    >
-                        <span class="btn-icon">💬</span>
-                        <span>WhatsApp</span>
-                    </a>
                 </div>
             </div>
         </div>
@@ -74,35 +63,7 @@ require_once __DIR__ . '/../views/partials/navbar.php';
         </div>
     </section>
 
-    <section class="page-section animate-on-scroll">
-        <div class="container">
-            <div class="cta-box">
-                <h2>Encuentra el vehículo ideal para ti</h2>
-                <p>
-                    Explora nuestro catálogo y elige el vehículo perfecto para tu viaje.
-                </p>
-
-                <a href="/benedetti-rent-a-car/public/vehiculos.php" class="btn btn-primary">
-                    <span class="btn-icon">✨</span>
-                    <span>Ver vehículos disponibles</span>
-                </a>
-            </div>
-        </div>
-    </section>
-
 </main>
-
-<!-- BOTÓN FLOTANTE WHATSAPP PRO -->
-<a 
-    href="https://wa.me/573153472438?text=Hola,%20estoy%20interesado%20en%20alquilar%20un%20vehículo%20en%20Barranquilla.%20¿Me%20pueden%20ayudar?"
-    class="whatsapp-float"
-    target="_blank"
-    aria-label="Contactar por WhatsApp"
-    onclick="registrarClickWhatsapp()"
->
-    <span class="whatsapp-icon">💬</span>
-    <span class="whatsapp-text">¿Necesitas ayuda?</span>
-</a>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -120,15 +81,6 @@ document.addEventListener('DOMContentLoaded', function () {
         observer.observe(el);
     });
 });
-
-/* TRACKING DE CLICS */
-function registrarClickWhatsapp() {
-    let clicks = localStorage.getItem("clicksWhatsappBenedetti") || 0;
-    clicks++;
-    localStorage.setItem("clicksWhatsappBenedetti", clicks);
-
-    console.log("Clics en WhatsApp Benedetti Rent a Car:", clicks);
-}
 </script>
 
 <?php

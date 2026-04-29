@@ -5,5 +5,11 @@
         <p>Atención personalizada para reservas de vehículos</p>
     </div>
 </footer>
+<a href="https://wa.me/573153472438" 
+   class="whatsapp-float" 
+   target="_blank" 
+   aria-label="Contactar por WhatsApp">
+    <span>💬</span>
+</a>
 </body>
 </html>

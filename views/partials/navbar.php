@@ -16,7 +16,6 @@
             <ul class="nav-links">
                 <li><a href="/benedetti-rent-a-car/public/index.php">Inicio</a></li>
                 <li><a href="/benedetti-rent-a-car/public/vehiculos.php">Vehículos</a></li>
-                <li><a href="/benedetti-rent-a-car/public/reserva.php">Reservar</a></li>
                 <li><a href="/benedetti-rent-a-car/public/contacto.php">Contacto</a></li>
             </ul>
         </nav>

@@ -1262,3 +1262,171 @@ body:has(.reserva-layout) .vehiculo-resumen {
     position: relative;
     z-index: 2;
 }
+
+/* ===== FONDO CONTACTO ===== */
+.contacto-bg {
+    position: relative;
+    min-height: calc(100vh - 90px);
+    background-image:
+        linear-gradient(rgba(3, 33, 85, 0.78), rgba(3, 33, 85, 0.82)),
+        url('/benedetti-rent-a-car/assets/img/reservas_marimondas.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    padding: 90px 0;
+}
+
+.contenido-contacto {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+}
+
+.contacto-bg h1 {
+    font-size: 42px;
+    margin-bottom: 30px;
+}
+
+.contacto-bg p {
+    font-size: 16px;
+}
+
+.contacto-bg .placeholder-box {
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    padding: 28px;
+    margin-top: 25px;
+    max-width: 100%;
+}
+
+/* ===== BOTÓN FLOTANTE WHATSAPP PRO ===== */
+.whatsapp-float {
+    position: fixed;
+    right: 30px;
+    bottom: 95px;
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: #ffffff;
+    text-decoration: none;
+
+    padding: 14px 20px;
+    border-radius: 50px;
+
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+
+    transition: all 0.3s ease;
+    animation: whatsappPulse 2.2s infinite;
+}
+
+.whatsapp-float:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 12px 35px rgba(37, 211, 102, 0.75);
+}
+
+.whatsapp-float span {
+    font-size: 22px;
+    line-height: 1;
+}
+
+.whatsapp-float .whatsapp-text {
+    white-space: nowrap;
+}
+
+/* Pulso elegante */
+@keyframes whatsappPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.55);
+    }
+    70% {
+        box-shadow: 0 0 0 14px rgba(37, 211, 102, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .whatsapp-float {
+        right: 18px;
+        bottom: 80px;
+        padding: 13px 15px;
+        font-size: 14px;
+    }
+
+    .whatsapp-float span {
+        font-size: 21px;
+    }
+}
+
+/* Ajuste móvil */
+@media (max-width: 768px) {
+    .whatsapp-float {
+        width: 56px;
+        height: 56px;
+        right: 18px;
+        bottom: 18px;
+        font-size: 27px;
+    }
+}
+
+/* ===== FONDO PAGO ===== */
+.pago-bg {
+    position: relative;
+    min-height: calc(100vh - 90px);
+
+    background-image: url('/benedetti-rent-a-car/assets/img/bocas_de_ceniza_.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    display: flex;
+    align-items: center;
+    padding: 80px 0;
+}
+
+/* Overlay azul elegante */
+.pago-bg .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: rgba(3, 33, 85, 0.82);
+    backdrop-filter: blur(4px);
+
+    z-index: 1;
+}
+
+/* Contenido encima */
+.contenido-pago {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+}
+
+/* Tarjeta del pago (mejora visual) */
+.contenido-pago .card,
+.contenido-pago .payment-box,
+.contenido-pago .placeholder-box {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 18px;
+    padding: 30px;
+}
