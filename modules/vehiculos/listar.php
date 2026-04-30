@@ -17,76 +17,111 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Vehículos</title>
+    <title>Lista de Vehículos | Benedetti Rent a Car</title>
+    <link rel="stylesheet" href="/benedetti-rent-a-car/assets/css/style.css">
 </head>
-<body>
 
-    <h1>Lista de Vehículos</h1>
+<body class="admin-vehicle-page">
 
-    <a href="crear.php">Registrar nuevo vehículo</a>
-    <br><br>
+<main class="admin-vehicle-bg">
+    <div class="admin-vehicle-overlay"></div>
 
-    <a href="../../admin/dashboard.php">Volver al Dashboard</a>
-    <br><br>
+    <section class="admin-vehicle-container">
 
-    <?php if (count($vehiculos) > 0): ?>
-        <table border="1" cellpadding="10" cellspacing="0">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Código</th>
-                    <th>Marca</th>
-                    <th>Modelo</th>
-                    <th>Color</th>
-                    <th>Capacidad</th>
-                    <th>Transmisión</th>
-                    <th>Categoría</th>
-                    <th>Año</th>
-                    <th>Placa</th>
-                    <th>Precio por día</th>
-                    <th>Precio desde día 3</th>
-                    <th>Estado</th>
-                    <th>Creado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($vehiculos as $vehiculo): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($vehiculo["id_vehiculo"]); ?></td>
-                        <td><?php echo htmlspecialchars($vehiculo["codigo_vehiculo"]); ?></td>
-                        <td><?php echo htmlspecialchars($vehiculo["marca"]); ?></td>
-                        <td><?php echo htmlspecialchars($vehiculo["modelo"]); ?></td>
-                        <td><?php echo htmlspecialchars($vehiculo["color"]); ?></td>
-                        <td><?php echo htmlspecialchars($vehiculo["capacidad"]); ?></td>
-                        <td><?php echo htmlspecialchars($vehiculo["transmision"]); ?></td>
-                        <td><?php echo htmlspecialchars($vehiculo["categoria"]); ?></td>
-                        <td><?php echo htmlspecialchars($vehiculo["anio"]); ?></td>
-                        <td><?php echo htmlspecialchars($vehiculo["placa"]); ?></td>
-                        <td><?php echo htmlspecialchars($vehiculo["precio_dia"]); ?></td>
-                        <td>
-                            <?php
-                            if ($vehiculo["precio_especial_3_dias"] !== null) {
-                                echo htmlspecialchars($vehiculo["precio_especial_3_dias"]);
-                            } else {
-                                echo "-";
-                            }
-                            ?>
-                        </td>
-                        <td><?php echo htmlspecialchars($vehiculo["estado"]); ?></td>
-                        <td><?php echo htmlspecialchars($vehiculo["created_at"]); ?></td>
-                        <td>
-                            <a href="editar.php?id=<?php echo $vehiculo['id_vehiculo']; ?>">Editar</a> |
-                            <a href="eliminar.php?id=<?php echo $vehiculo['id_vehiculo']; ?>" onclick="return confirm('¿Seguro que quieres eliminar este vehículo?');">Eliminar</a> |
-                            <a href="disponibilidad.php?id=<?php echo $vehiculo['id_vehiculo']; ?>">Disponibilidad</a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    <?php else: ?>
-        <p>No hay vehículos registrados.</p>
-    <?php endif; ?>
+        <div class="admin-vehicle-header">
+            <div>
+                <span class="admin-vehicle-badge">Inventario administrativo</span>
+                <h1>Lista de vehículos</h1>
+                <p>Consulta rápidamente el inventario y abre la ficha completa de cada vehículo.</p>
+            </div>
+
+            <div class="admin-vehicle-actions">
+                <a href="crear.php" class="admin-btn admin-btn-primary">Registrar vehículo</a>
+                <a href="../../admin/dashboard.php" class="admin-btn admin-btn-dark">Dashboard</a>
+            </div>
+        </div>
+
+        <div class="admin-table-card">
+            <div class="admin-table-header">
+                <h2>Vehículos registrados</h2>
+                <p>Total de vehículos: <?php echo count($vehiculos); ?></p>
+            </div>
+
+            <?php if (count($vehiculos) > 0): ?>
+                <div class="admin-table-wrap admin-table-wrap-compact">
+                    <table class="admin-table admin-table-compact">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Código</th>
+                                <th>Vehículo</th>
+                                <th>Placa</th>
+                                <th>Estado</th>
+                                <th>Precio día</th>
+                                <th>Ver</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <?php foreach ($vehiculos as $vehiculo): ?>
+                                <tr>
+                                    <td>
+                                        <?php if (!empty($vehiculo["imagen"])): ?>
+                                            <img
+                                                src="/benedetti-rent-a-car/assets/img/vehiculos/<?php echo htmlspecialchars($vehiculo["imagen"]); ?>"
+                                                alt="<?php echo htmlspecialchars($vehiculo["marca"] . ' ' . $vehiculo["modelo"]); ?>"
+                                                class="admin-vehicle-thumb"
+                                            >
+                                        <?php else: ?>
+                                            <div class="admin-no-image">Sin imagen</div>
+                                        <?php endif; ?>
+                                    </td>
+
+                                    <td>
+                                        <strong><?php echo htmlspecialchars($vehiculo["codigo_vehiculo"]); ?></strong>
+                                    </td>
+
+                                    <td>
+                                        <a href="ver.php?id=<?php echo $vehiculo['id_vehiculo']; ?>" class="vehicle-name-link">
+                                            <?php echo htmlspecialchars($vehiculo["marca"]); ?>
+                                        </a><br>
+                                        <span><?php echo htmlspecialchars($vehiculo["modelo"]); ?></span>
+                                    </td>
+
+                                    <td><?php echo htmlspecialchars($vehiculo["placa"]); ?></td>
+
+                                    <td>
+                                        <span class="admin-status admin-status-<?php echo htmlspecialchars($vehiculo["estado"]); ?>">
+                                            <?php echo htmlspecialchars(ucfirst($vehiculo["estado"])); ?>
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        $<?php echo number_format((float)$vehiculo["precio_dia"], 0, ',', '.'); ?>
+                                    </td>
+
+                                    <td>
+                                        <a href="ver.php?id=<?php echo $vehiculo['id_vehiculo']; ?>" class="admin-action availability">
+                                            Ver ficha
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+
+            <?php else: ?>
+                <div class="admin-empty-box">
+                    <h3>No hay vehículos registrados</h3>
+                    <p>Registra tu primer vehículo para comenzar.</p>
+                    <a href="crear.php" class="admin-btn admin-btn-primary">Registrar vehículo</a>
+                </div>
+            <?php endif; ?>
+        </div>
+
+    </section>
+</main>
 
 </body>
 </html>

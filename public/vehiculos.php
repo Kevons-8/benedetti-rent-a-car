@@ -42,20 +42,13 @@ $vehiculos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <?php
                             $marcaModelo = trim(($vehiculo['marca'] ?? '') . ' ' . ($vehiculo['modelo'] ?? ''));
                             $imagenVehiculo = !empty($vehiculo['imagen']) ? $vehiculo['imagen'] : null;
-
-                            if (
-                                strtolower(trim($vehiculo['marca'] ?? '')) === 'mazda' &&
-                                strtolower(trim($vehiculo['modelo'] ?? '')) === '2'
-                            ) {
-                                $imagenVehiculo = 'Mazda_2_sedan.png';
-                            }
                         ?>
 
                         <article class="vehiculo-card vehiculo-card-premium hover-lift">
                             <div class="vehiculo-img-wrap">
                                 <?php if ($imagenVehiculo): ?>
                                     <img
-                                        src="/benedetti-rent-a-car/assets/img/<?php echo htmlspecialchars($imagenVehiculo); ?>"
+                                        src="/benedetti-rent-a-car/assets/img/vehiculos/<?php echo htmlspecialchars($imagenVehiculo); ?>"
                                         alt="<?php echo htmlspecialchars($marcaModelo); ?>"
                                         class="vehiculo-img"
                                     >
@@ -64,25 +57,23 @@ $vehiculos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         Imagen no disponible
                                     </div>
                                 <?php endif; ?>
-
-                                
                             </div>
 
                             <div class="vehiculo-info vehiculo-info-premium">
                                 <h3><?php echo htmlspecialchars($marcaModelo); ?></h3>
 
                                 <div class="vehiculo-meta">
-                                    <span><?php echo htmlspecialchars($vehiculo['capacidad']); ?> personas</span>
-                                    <span><?php echo htmlspecialchars($vehiculo['transmision']); ?></span>
-                                    <span><?php echo htmlspecialchars($vehiculo['anio']); ?></span>
+                                    <span><?php echo htmlspecialchars($vehiculo['capacidad'] ?? ''); ?> personas</span>
+                                    <span><?php echo htmlspecialchars($vehiculo['transmision'] ?? ''); ?></span>
+                                    <span><?php echo htmlspecialchars($vehiculo['anio'] ?? ''); ?></span>
                                 </div>
 
-                                <p><strong>Categoría:</strong> <?php echo htmlspecialchars($vehiculo['categoria']); ?></p>
+                                <p><strong>Categoría:</strong> <?php echo htmlspecialchars($vehiculo['categoria'] ?? ''); ?></p>
 
                                 <p class="estado-vehiculo">
                                     <strong>Estado:</strong>
-                                    <span class="<?php echo $vehiculo['estado'] === 'disponible' ? 'estado-disponible' : 'estado-no-disponible'; ?>">
-                                        <?php echo htmlspecialchars(ucfirst($vehiculo['estado'])); ?>
+                                    <span class="<?php echo ($vehiculo['estado'] === 'disponible') ? 'estado-disponible' : 'estado-no-disponible'; ?>">
+                                        <?php echo htmlspecialchars(ucfirst($vehiculo['estado'] ?? '')); ?>
                                     </span>
                                 </p>
 
@@ -106,6 +97,7 @@ $vehiculos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php endif; ?>
         </div>
     </section>
+
 </main>
 
 <?php require_once __DIR__ . '/../views/partials/footer.php'; ?>
