@@ -59,9 +59,32 @@ function generarOpcionesHora(): string
     return $opciones;
 }
 
+function obtenerImagenVehiculo(?string $imagen): string
+{
+    $baseUrl = '/benedetti-rent-a-car/assets/img/';
+    $basePath = __DIR__ . '/../assets/img/';
+
+    if (!empty($imagen)) {
+        $imagen = basename($imagen);
+
+        $rutaVehiculos = $basePath . 'vehiculos/' . $imagen;
+        if (file_exists($rutaVehiculos)) {
+            return $baseUrl . 'vehiculos/' . rawurlencode($imagen);
+        }
+
+        $rutaImg = $basePath . $imagen;
+        if (file_exists($rutaImg)) {
+            return $baseUrl . rawurlencode($imagen);
+        }
+    }
+
+    return $baseUrl . 'no-image.png';
+}
+
 $precioDia = $vehiculo ? (float)$vehiculo['precio_dia'] : 0;
 $precioHoraExtra = ($vehiculo && !empty($vehiculo['precio_hora_extra'])) ? (float)$vehiculo['precio_hora_extra'] : 0;
 $costoDevolucionOtroFijo = 0;
+$imagenVehiculo = $vehiculo ? obtenerImagenVehiculo($vehiculo['imagen'] ?? '') : '/benedetti-rent-a-car/assets/img/no-image.png';
 ?>
 
 <style>
@@ -169,45 +192,52 @@ $costoDevolucionOtroFijo = 0;
 }
 
 .reserva-layout-pro {
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 28px;
-    align-items: start;
+    display: grid !important;
+    grid-template-columns: 320px minmax(0, 1fr) !important;
+    gap: 28px !important;
+    align-items: start !important;
 }
 
 .reserva-sidebar {
+    width: 320px !important;
+    min-width: 320px !important;
+    max-width: 320px !important;
     position: sticky;
     top: 110px;
 }
 
 .reserva-vehiculo-card {
-    background: rgba(19, 35, 63, 0.78);
-    border-radius: 22px;
+    width: 320px;
+    background: rgba(19, 35, 63, 0.85);
+    border-radius: 20px;
     overflow: hidden;
     border: 1px solid rgba(255,255,255,0.10);
-    box-shadow: 0 22px 48px rgba(0,0,0,0.34);
-    backdrop-filter: blur(14px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.35);
 }
 
+/* 🔥 IMAGEN IGUAL QUE VEHICULOS */
 .reserva-vehiculo-card .vehiculo-img {
     width: 100%;
-    height: 240px;
-    object-fit: cover;
-}
+    height: 220px;
+    object-fit: contain;
+    object-position: center;
+    display: block;
 
+    border-radius: 16px; /* 🔥 AQUÍ está lo que te falta */
+}
+/* INFO */
 .reserva-vehiculo-card .vehiculo-info {
-    padding: 20px;
+    padding: 18px;
 }
 
 .reserva-vehiculo-card .vehiculo-info h3 {
-    color: #ffffff;
-    font-size: 1.4rem;
+    color: #fff;
     margin-bottom: 10px;
 }
 
 .reserva-vehiculo-card .vehiculo-info p {
     color: #d8e2f0;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .reserva-form-card {
@@ -343,10 +373,14 @@ $costoDevolucionOtroFijo = 0;
 
 @media (max-width: 992px) {
     .reserva-layout-pro {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
     }
 
-    .reserva-sidebar {
+    .reserva-sidebar,
+    .reserva-vehiculo-card {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
         position: static;
     }
 
@@ -423,22 +457,22 @@ $costoDevolucionOtroFijo = 0;
             <div class="reserva-layout-pro">
 
                 <aside class="reserva-sidebar">
-                    <div class="reserva-vehiculo-card">
-                        <?php if (!empty($vehiculo['imagen'])): ?>
-                            <img
-                                src="/benedetti-rent-a-car/assets/img/<?php echo htmlspecialchars($vehiculo['imagen']); ?>"
-                                alt="<?php echo htmlspecialchars($vehiculo['marca'] . ' ' . $vehiculo['modelo']); ?>"
-                                class="vehiculo-img"
-                            >
-                        <?php endif; ?>
+    <div class="reserva-vehiculo-card">
 
-                        <div class="vehiculo-info">
-                            <h3><?php echo htmlspecialchars($vehiculo['marca'] . ' ' . $vehiculo['modelo']); ?></h3>
-                            <p><strong>Transmisión:</strong> <?php echo htmlspecialchars($vehiculo['transmision']); ?></p>
-                            <p><strong>Precio por día:</strong> $<?php echo number_format((float)$vehiculo['precio_dia'], 0, ',', '.'); ?></p>
-                        </div>
-                    </div>
-                </aside>
+        <img
+            src="<?php echo htmlspecialchars($imagenVehiculo); ?>"
+            alt="<?php echo htmlspecialchars($vehiculo['marca'] . ' ' . $vehiculo['modelo']); ?>"
+            class="vehiculo-img"
+        >
+
+        <div class="vehiculo-info">
+            <h3><?php echo htmlspecialchars($vehiculo['marca'] . ' ' . $vehiculo['modelo']); ?></h3>
+            <p><strong>Transmisión:</strong> <?php echo htmlspecialchars($vehiculo['transmision']); ?></p>
+            <p><strong>Precio por día:</strong> $<?php echo number_format((float)$vehiculo['precio_dia'], 0, ',', '.'); ?></p>
+        </div>
+
+    </div>
+</aside>
 
                 <form action="/benedetti-rent-a-car/public/procesar_reserva.php" method="POST" class="reserva-form-card">
                     <input type="hidden" name="id_vehiculo" value="<?php echo htmlspecialchars((string)$vehiculo['id_vehiculo']); ?>">
