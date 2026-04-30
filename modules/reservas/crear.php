@@ -454,50 +454,275 @@ if (!empty($correo)) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Crear Reserva</title>
+
 <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background:
+        linear-gradient(135deg, rgba(3,13,31,0.86), rgba(6,32,71,0.82)),
+        url("/benedetti-rent-a-car/assets/img/fondo_vehiculos.png") center center / cover no-repeat fixed;
+    color: #ffffff;
+    padding: 45px 7%;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.badge {
+    display: inline-flex;
+    padding: 9px 15px;
+    border-radius: 999px;
+    background: rgba(34,197,94,0.12);
+    border: 1px solid rgba(34,197,94,0.35);
+    color: #86efac;
+    font-size: 0.9rem;
+    font-weight: 800;
+    margin-bottom: 14px;
+}
+
+h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 10px;
+}
+
+.header p {
+    color: #d8e2f0;
+    max-width: 720px;
+    line-height: 1.6;
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.btn,
+button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    border: none;
+    font-size: 0.92rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.btn-primary,
+button[name="crear_reserva"],
+button[name="buscar_cliente"] {
+    color: #ffffff;
+    background: linear-gradient(180deg, #6eff1f 0%, #38d600 45%, #19a500 100%);
+    box-shadow:
+        inset 0 2px 0 rgba(255,255,255,0.32),
+        0 12px 24px rgba(34,197,94,0.28);
+}
+
+.btn-dark {
+    color: #ffffff;
+    background: rgba(3,10,24,0.65);
+    border: 1px solid rgba(255,255,255,0.14);
+}
+
+.btn:hover,
+button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+}
+
+.alert {
+    margin-bottom: 24px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    font-weight: 800;
+    color: #d8e2f0;
+    background: rgba(8,21,45,0.78);
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+form {
+    display: grid;
+    gap: 24px;
+}
+
+.bloque {
+    background: rgba(15,28,51,0.88);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 26px;
+    padding: 28px;
+    box-shadow: 0 24px 70px rgba(0,0,0,0.35);
+    backdrop-filter: blur(16px);
+}
+
+.bloque h3 {
+    color: #ffffff;
+    font-size: 1.35rem;
+    margin-bottom: 22px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.10);
+}
+
+.oculto {
+    display: none;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.fila {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.fila-full {
+    grid-column: 1 / -1;
+}
+
+.fila label {
+    color: #ffffff;
+    font-size: 0.93rem;
+    font-weight: 800;
+}
+
+.fila input,
+.fila select,
+.fila textarea {
+    width: 100%;
+    min-height: 50px;
+    padding: 13px 15px;
+    border-radius: 15px;
+    background: rgba(8,21,45,0.95);
+    color: #ffffff;
+    border: 1px solid rgba(148,163,184,0.35);
+    font-size: 0.95rem;
+    outline: none;
+}
+
+.fila textarea {
+    resize: vertical;
+    min-height: 115px;
+}
+
+.fila input:focus,
+.fila select:focus,
+.fila textarea:focus {
+    border-color: #22c55e;
+    box-shadow:
+        0 0 0 4px rgba(34,197,94,0.13),
+        0 0 22px rgba(34,197,94,0.12);
+}
+
+.resultado {
+    margin-top: 22px;
+    padding: 22px;
+    border-radius: 22px;
+    background: rgba(34,197,94,0.13);
+    border: 1px solid rgba(34,197,94,0.35);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.resultado div {
+    padding: 16px;
+    border-radius: 18px;
+    background: rgba(8,21,45,0.72);
+    border: 1px solid rgba(255,255,255,0.10);
+}
+
+.resultado strong {
+    display: block;
+    color: #86efac;
+    margin-bottom: 7px;
+}
+
+.resultado span {
+    color: #ffffff;
+    font-size: 1.3rem;
+    font-weight: 900;
+}
+
+.form-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255,255,255,0.10);
+}
+
+.cliente-note {
+    margin-top: 18px;
+    padding: 15px 18px;
+    border-radius: 16px;
+    background: rgba(34,197,94,0.13);
+    border: 1px solid rgba(34,197,94,0.35);
+    color: #dcfce7;
+    font-weight: 800;
+}
+
+@media (max-width: 850px) {
     body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
+        padding: 35px 5%;
     }
-    .bloque {
-        border: 1px solid #ccc;
-        padding: 15px;
-        margin-bottom: 20px;
+
+    .header {
+        flex-direction: column;
     }
-    .oculto {
-        display: none;
+
+    .header-actions,
+    .form-actions {
+        width: 100%;
+        flex-direction: column;
     }
-    .fila {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 12px;
-        flex-wrap: wrap;
-    }
-    .fila label {
-        min-width: 170px;
-        font-weight: bold;
-    }
-    .fila input,
-    .fila select,
-    .fila textarea {
-        width: 320px;
-        padding: 7px;
-    }
-    .fila textarea {
-        min-height: 80px;
-    }
-    .resultado {
-        background: #f5f5f5;
-        border: 1px solid #ddd;
-        padding: 12px;
-        margin-top: 10px;
-    }
+
+    .btn,
     button {
-        padding: 10px 15px;
-        cursor: pointer;
+        width: 100%;
     }
+
+    .form-grid,
+    .resultado {
+        grid-template-columns: 1fr;
+    }
+
+    .fila-full {
+        grid-column: auto;
+    }
+
+    .bloque {
+        padding: 22px;
+        border-radius: 22px;
+    }
+}
 </style>
+
 <script>
 const vehiculosData = <?php echo json_encode($vehiculos, JSON_UNESCAPED_UNICODE); ?>;
 
@@ -572,207 +797,244 @@ window.onload = function() {
 };
 </script>
 </head>
+
 <body>
 
-<h1>Crear Reserva</h1>
+<div class="container">
 
-<?php if ($mensaje != "") { ?>
-    <p><?php echo htmlspecialchars($mensaje); ?></p>
-<?php } ?>
+    <div class="header">
+        <div>
+            <span class="badge">Gestión de reservas</span>
+            <h1>Crear Reserva</h1>
+            <p>Registra una nueva reserva seleccionando cliente, vehículo, fechas, horas y observaciones.</p>
+        </div>
 
-<form method="POST">
-
-<div class="bloque">
-    <h3>1. Seleccione el tipo de cliente</h3>
-    <div class="fila">
-        <label for="tipo_cliente">Tipo de cliente</label>
-        <select name="tipo_cliente" id="tipo_cliente" onchange="mostrarFormulario()">
-            <option value="">Seleccione una opción</option>
-            <option value="existente" <?php echo ($tipo_cliente == "existente") ? "selected" : ""; ?>>Cliente existente</option>
-            <option value="nuevo" <?php echo ($tipo_cliente == "nuevo") ? "selected" : ""; ?>>Cliente nuevo</option>
-        </select>
-    </div>
-</div>
-
-<div id="bloque_existente" class="bloque oculto">
-    <h3>2. Datos del cliente existente</h3>
-
-    <div class="fila">
-        <label>Tipo documento</label>
-        <select name="tipo_documento_busqueda">
-            <option value="">Seleccione tipo de documento</option>
-            <option value="CC" <?php echo ($tipo_documento_busqueda == "CC") ? "selected" : ""; ?>>Cédula de ciudadanía</option>
-            <option value="CE" <?php echo ($tipo_documento_busqueda == "CE") ? "selected" : ""; ?>>Cédula de extranjería</option>
-            <option value="PASAPORTE" <?php echo ($tipo_documento_busqueda == "PASAPORTE") ? "selected" : ""; ?>>Pasaporte</option>
-            <option value="DNI" <?php echo ($tipo_documento_busqueda == "DNI") ? "selected" : ""; ?>>DNI</option>
-            <option value="TI" <?php echo ($tipo_documento_busqueda == "TI") ? "selected" : ""; ?>>Tarjeta de identidad</option>
-            <option value="NIT" <?php echo ($tipo_documento_busqueda == "NIT") ? "selected" : ""; ?>>NIT</option>
-            <option value="OTRO" <?php echo ($tipo_documento_busqueda == "OTRO") ? "selected" : ""; ?>>Otro</option>
-        </select>
+        <div class="header-actions">
+            <a href="listar.php" class="btn btn-dark">← Volver a reservas</a>
+            <a href="../../admin/dashboard.php" class="btn btn-dark">Dashboard</a>
+        </div>
     </div>
 
-    <div class="fila">
-        <label>Número documento</label>
-        <input type="text" name="numero_documento_busqueda" value="<?php echo htmlspecialchars($numero_documento_busqueda); ?>">
-    </div>
-
-    <button type="submit" name="buscar_cliente">Buscar cliente existente</button>
-
-    <div class="fila">
-        <label>Nombre</label>
-        <input type="text" name="nombre" value="<?php echo htmlspecialchars($nombre); ?>">
-    </div>
-
-    <div class="fila">
-        <label>Apellido</label>
-        <input type="text" name="apellido" value="<?php echo htmlspecialchars($apellido); ?>">
-    </div>
-
-    <div class="fila">
-        <label>Teléfono</label>
-        <input type="text" name="telefono" value="<?php echo htmlspecialchars($telefono); ?>">
-    </div>
-
-    <div class="fila">
-        <label>Correo</label>
-        <input type="email" name="correo" value="<?php echo htmlspecialchars($correo); ?>">
-    </div>
-
-    <div class="fila">
-        <label>Dirección</label>
-        <input type="text" name="direccion" value="<?php echo htmlspecialchars($direccion); ?>">
-    </div>
-
-    <div class="fila">
-        <label>Licencia conducción</label>
-        <input type="text" name="licencia_conduccion" value="<?php echo htmlspecialchars($licencia_conduccion); ?>">
-    </div>
-
-    <?php if ($cliente_encontrado) { ?>
-        <p><strong>Cliente encontrado.</strong> Puede actualizar los datos si lo desea. El número de documento no se modifica.</p>
+    <?php if ($mensaje != "") { ?>
+        <div class="alert">
+            <?php echo htmlspecialchars($mensaje); ?>
+        </div>
     <?php } ?>
-</div>
 
-<div id="bloque_nuevo" class="bloque oculto">
-    <h3>2. Datos del cliente nuevo</h3>
+    <form method="POST">
 
-    <div class="fila">
-        <label>Tipo documento</label>
-        <select name="tipo_documento_nuevo">
-            <option value="">Seleccione tipo de documento</option>
-            <option value="CC" <?php echo ($tipo_documento_nuevo == "CC") ? "selected" : ""; ?>>Cédula de ciudadanía</option>
-            <option value="CE" <?php echo ($tipo_documento_nuevo == "CE") ? "selected" : ""; ?>>Cédula de extranjería</option>
-            <option value="PASAPORTE" <?php echo ($tipo_documento_nuevo == "PASAPORTE") ? "selected" : ""; ?>>Pasaporte</option>
-            <option value="DNI" <?php echo ($tipo_documento_nuevo == "DNI") ? "selected" : ""; ?>>DNI</option>
-            <option value="TI" <?php echo ($tipo_documento_nuevo == "TI") ? "selected" : ""; ?>>Tarjeta de identidad</option>
-            <option value="NIT" <?php echo ($tipo_documento_nuevo == "NIT") ? "selected" : ""; ?>>NIT</option>
-            <option value="OTRO" <?php echo ($tipo_documento_nuevo == "OTRO") ? "selected" : ""; ?>>Otro</option>
-        </select>
-    </div>
+        <div class="bloque">
+            <h3>1. Seleccione el tipo de cliente</h3>
 
-    <div class="fila">
-        <label>Número documento</label>
-        <input type="text" name="numero_documento_nuevo" value="<?php echo htmlspecialchars($numero_documento_nuevo); ?>">
-    </div>
+            <div class="form-grid">
+                <div class="fila">
+                    <label for="tipo_cliente">Tipo de cliente</label>
+                    <select name="tipo_cliente" id="tipo_cliente" onchange="mostrarFormulario()">
+                        <option value="">Seleccione una opción</option>
+                        <option value="existente" <?php echo ($tipo_cliente == "existente") ? "selected" : ""; ?>>Cliente existente</option>
+                        <option value="nuevo" <?php echo ($tipo_cliente == "nuevo") ? "selected" : ""; ?>>Cliente nuevo</option>
+                    </select>
+                </div>
+            </div>
+        </div>
 
-    <div class="fila">
-        <label>Nombre</label>
-        <input type="text" name="nombre_nuevo" value="<?php echo htmlspecialchars($nombre_nuevo); ?>">
-    </div>
+        <div id="bloque_existente" class="bloque oculto">
+            <h3>2. Datos del cliente existente</h3>
 
-    <div class="fila">
-        <label>Apellido</label>
-        <input type="text" name="apellido_nuevo" value="<?php echo htmlspecialchars($apellido_nuevo); ?>">
-    </div>
+            <div class="form-grid">
+                <div class="fila">
+                    <label>Tipo documento</label>
+                    <select name="tipo_documento_busqueda">
+                        <option value="">Seleccione tipo de documento</option>
+                        <option value="CC" <?php echo ($tipo_documento_busqueda == "CC") ? "selected" : ""; ?>>Cédula de ciudadanía</option>
+                        <option value="CE" <?php echo ($tipo_documento_busqueda == "CE") ? "selected" : ""; ?>>Cédula de extranjería</option>
+                        <option value="PASAPORTE" <?php echo ($tipo_documento_busqueda == "PASAPORTE") ? "selected" : ""; ?>>Pasaporte</option>
+                        <option value="DNI" <?php echo ($tipo_documento_busqueda == "DNI") ? "selected" : ""; ?>>DNI</option>
+                        <option value="TI" <?php echo ($tipo_documento_busqueda == "TI") ? "selected" : ""; ?>>Tarjeta de identidad</option>
+                        <option value="NIT" <?php echo ($tipo_documento_busqueda == "NIT") ? "selected" : ""; ?>>NIT</option>
+                        <option value="OTRO" <?php echo ($tipo_documento_busqueda == "OTRO") ? "selected" : ""; ?>>Otro</option>
+                    </select>
+                </div>
 
-    <div class="fila">
-        <label>Teléfono</label>
-        <input type="text" name="telefono_nuevo" value="<?php echo htmlspecialchars($telefono_nuevo); ?>">
-    </div>
+                <div class="fila">
+                    <label>Número documento</label>
+                    <input type="text" name="numero_documento_busqueda" value="<?php echo htmlspecialchars($numero_documento_busqueda); ?>">
+                </div>
 
-    <div class="fila">
-        <label>Correo</label>
-        <input type="email" name="correo_nuevo" value="<?php echo htmlspecialchars($correo_nuevo); ?>">
-    </div>
+                <div class="fila fila-full">
+                    <button type="submit" name="buscar_cliente">Buscar cliente existente</button>
+                </div>
 
-    <div class="fila">
-        <label>Dirección</label>
-        <input type="text" name="direccion_nuevo" value="<?php echo htmlspecialchars($direccion_nuevo); ?>">
-    </div>
+                <div class="fila">
+                    <label>Nombre</label>
+                    <input type="text" name="nombre" value="<?php echo htmlspecialchars($nombre); ?>">
+                </div>
 
-    <div class="fila">
-        <label>Licencia conducción</label>
-        <input type="text" name="licencia_conduccion_nuevo" value="<?php echo htmlspecialchars($licencia_conduccion_nuevo); ?>">
-    </div>
-</div>
+                <div class="fila">
+                    <label>Apellido</label>
+                    <input type="text" name="apellido" value="<?php echo htmlspecialchars($apellido); ?>">
+                </div>
 
-<div class="bloque">
-    <h3>3. Datos de la reserva</h3>
+                <div class="fila">
+                    <label>Teléfono</label>
+                    <input type="text" name="telefono" value="<?php echo htmlspecialchars($telefono); ?>">
+                </div>
 
-    <div class="fila">
-        <label>Vehículo</label>
-        <select name="id_vehiculo" id="id_vehiculo" onchange="calcularTotalEstimado()">
-            <option value="">Seleccione vehículo</option>
-            <?php foreach ($vehiculos as $vehiculo) { ?>
-                <option value="<?php echo $vehiculo["id_vehiculo"]; ?>" <?php echo ($id_vehiculo == $vehiculo["id_vehiculo"]) ? "selected" : ""; ?>>
-                    <?php echo htmlspecialchars($vehiculo["marca"] . " " . $vehiculo["modelo"]); ?>
-                </option>
+                <div class="fila">
+                    <label>Correo</label>
+                    <input type="email" name="correo" value="<?php echo htmlspecialchars($correo); ?>">
+                </div>
+
+                <div class="fila">
+                    <label>Dirección</label>
+                    <input type="text" name="direccion" value="<?php echo htmlspecialchars($direccion); ?>">
+                </div>
+
+                <div class="fila">
+                    <label>Licencia conducción</label>
+                    <input type="text" name="licencia_conduccion" value="<?php echo htmlspecialchars($licencia_conduccion); ?>">
+                </div>
+            </div>
+
+            <?php if ($cliente_encontrado) { ?>
+                <div class="cliente-note">
+                    Cliente encontrado. Puede actualizar los datos si lo desea. El número de documento no se modifica.
+                </div>
             <?php } ?>
-        </select>
-    </div>
+        </div>
 
-    <div class="fila">
-        <label>Fecha inicio</label>
-        <input type="date" id="fecha_inicio" name="fecha_inicio" value="<?php echo htmlspecialchars($fecha_inicio); ?>" onchange="calcularTotalEstimado()">
-    </div>
+        <div id="bloque_nuevo" class="bloque oculto">
+            <h3>2. Datos del cliente nuevo</h3>
 
-    <div class="fila">
-        <label>Hora inicio</label>
-        <select id="hora_inicio" name="hora_inicio" onchange="calcularTotalEstimado()">
-            <option value="">Seleccione hora</option>
-            <?php foreach ($horas_militares as $hora) { ?>
-                <option value="<?php echo $hora; ?>" <?php echo ($hora_inicio == $hora) ? "selected" : ""; ?>>
-                    <?php echo $hora; ?>
-                </option>
-            <?php } ?>
-        </select>
-    </div>
+            <div class="form-grid">
+                <div class="fila">
+                    <label>Tipo documento</label>
+                    <select name="tipo_documento_nuevo">
+                        <option value="">Seleccione tipo de documento</option>
+                        <option value="CC" <?php echo ($tipo_documento_nuevo == "CC") ? "selected" : ""; ?>>Cédula de ciudadanía</option>
+                        <option value="CE" <?php echo ($tipo_documento_nuevo == "CE") ? "selected" : ""; ?>>Cédula de extranjería</option>
+                        <option value="PASAPORTE" <?php echo ($tipo_documento_nuevo == "PASAPORTE") ? "selected" : ""; ?>>Pasaporte</option>
+                        <option value="DNI" <?php echo ($tipo_documento_nuevo == "DNI") ? "selected" : ""; ?>>DNI</option>
+                        <option value="TI" <?php echo ($tipo_documento_nuevo == "TI") ? "selected" : ""; ?>>Tarjeta de identidad</option>
+                        <option value="NIT" <?php echo ($tipo_documento_nuevo == "NIT") ? "selected" : ""; ?>>NIT</option>
+                        <option value="OTRO" <?php echo ($tipo_documento_nuevo == "OTRO") ? "selected" : ""; ?>>Otro</option>
+                    </select>
+                </div>
 
-    <div class="fila">
-        <label>Fecha fin</label>
-        <input type="date" id="fecha_fin" name="fecha_fin" value="<?php echo htmlspecialchars($fecha_fin); ?>" onchange="calcularTotalEstimado()">
-    </div>
+                <div class="fila">
+                    <label>Número documento</label>
+                    <input type="text" name="numero_documento_nuevo" value="<?php echo htmlspecialchars($numero_documento_nuevo); ?>">
+                </div>
 
-    <div class="fila">
-        <label>Hora fin</label>
-        <select id="hora_fin" name="hora_fin" onchange="calcularTotalEstimado()">
-            <option value="">Seleccione hora</option>
-            <?php foreach ($horas_militares as $hora) { ?>
-                <option value="<?php echo $hora; ?>" <?php echo ($hora_fin == $hora) ? "selected" : ""; ?>>
-                    <?php echo $hora; ?>
-                </option>
-            <?php } ?>
-        </select>
-    </div>
+                <div class="fila">
+                    <label>Nombre</label>
+                    <input type="text" name="nombre_nuevo" value="<?php echo htmlspecialchars($nombre_nuevo); ?>">
+                </div>
 
-    <div class="resultado">
-        <strong>Días estimados:</strong> <span id="dias_estimados"><?php echo ($dias_calculados !== "") ? htmlspecialchars($dias_calculados) : "-"; ?></span><br>
-        <strong>Total estimado:</strong> $<span id="total_estimado"><?php echo ($total_calculado !== "") ? number_format((float)$total_calculado, 0, ',', '.') : "-"; ?></span>
-    </div>
+                <div class="fila">
+                    <label>Apellido</label>
+                    <input type="text" name="apellido_nuevo" value="<?php echo htmlspecialchars($apellido_nuevo); ?>">
+                </div>
 
-    <br>
+                <div class="fila">
+                    <label>Teléfono</label>
+                    <input type="text" name="telefono_nuevo" value="<?php echo htmlspecialchars($telefono_nuevo); ?>">
+                </div>
 
-    <div class="fila">
-        <label>Observaciones</label>
-        <textarea name="observaciones"><?php echo htmlspecialchars($observaciones); ?></textarea>
-    </div>
+                <div class="fila">
+                    <label>Correo</label>
+                    <input type="email" name="correo_nuevo" value="<?php echo htmlspecialchars($correo_nuevo); ?>">
+                </div>
 
-    <button type="submit" name="crear_reserva">Crear Reserva</button>
+                <div class="fila">
+                    <label>Dirección</label>
+                    <input type="text" name="direccion_nuevo" value="<?php echo htmlspecialchars($direccion_nuevo); ?>">
+                </div>
+
+                <div class="fila">
+                    <label>Licencia conducción</label>
+                    <input type="text" name="licencia_conduccion_nuevo" value="<?php echo htmlspecialchars($licencia_conduccion_nuevo); ?>">
+                </div>
+            </div>
+        </div>
+
+        <div class="bloque">
+            <h3>3. Datos de la reserva</h3>
+
+            <div class="form-grid">
+                <div class="fila fila-full">
+                    <label>Vehículo</label>
+                    <select name="id_vehiculo" id="id_vehiculo" onchange="calcularTotalEstimado()">
+                        <option value="">Seleccione vehículo</option>
+                        <?php foreach ($vehiculos as $vehiculo) { ?>
+                            <option value="<?php echo $vehiculo["id_vehiculo"]; ?>" <?php echo ($id_vehiculo == $vehiculo["id_vehiculo"]) ? "selected" : ""; ?>>
+                                <?php echo htmlspecialchars($vehiculo["marca"] . " " . $vehiculo["modelo"]); ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                </div>
+
+                <div class="fila">
+                    <label>Fecha inicio</label>
+                    <input type="date" id="fecha_inicio" name="fecha_inicio" value="<?php echo htmlspecialchars($fecha_inicio); ?>" onchange="calcularTotalEstimado()">
+                </div>
+
+                <div class="fila">
+                    <label>Hora inicio</label>
+                    <select id="hora_inicio" name="hora_inicio" onchange="calcularTotalEstimado()">
+                        <option value="">Seleccione hora</option>
+                        <?php foreach ($horas_militares as $hora) { ?>
+                            <option value="<?php echo $hora; ?>" <?php echo ($hora_inicio == $hora) ? "selected" : ""; ?>>
+                                <?php echo $hora; ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                </div>
+
+                <div class="fila">
+                    <label>Fecha fin</label>
+                    <input type="date" id="fecha_fin" name="fecha_fin" value="<?php echo htmlspecialchars($fecha_fin); ?>" onchange="calcularTotalEstimado()">
+                </div>
+
+                <div class="fila">
+                    <label>Hora fin</label>
+                    <select id="hora_fin" name="hora_fin" onchange="calcularTotalEstimado()">
+                        <option value="">Seleccione hora</option>
+                        <?php foreach ($horas_militares as $hora) { ?>
+                            <option value="<?php echo $hora; ?>" <?php echo ($hora_fin == $hora) ? "selected" : ""; ?>>
+                                <?php echo $hora; ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                </div>
+
+                <div class="fila fila-full">
+                    <label>Observaciones</label>
+                    <textarea name="observaciones"><?php echo htmlspecialchars($observaciones); ?></textarea>
+                </div>
+            </div>
+
+            <div class="resultado">
+                <div>
+                    <strong>Días estimados</strong>
+                    <span id="dias_estimados"><?php echo ($dias_calculados !== "") ? htmlspecialchars($dias_calculados) : "-"; ?></span>
+                </div>
+
+                <div>
+                    <strong>Total estimado</strong>
+                    $<span id="total_estimado"><?php echo ($total_calculado !== "") ? number_format((float)$total_calculado, 0, ',', '.') : "-"; ?></span>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" name="crear_reserva">Crear Reserva</button>
+                <a href="listar.php" class="btn btn-dark">Cancelar</a>
+            </div>
+        </div>
+
+    </form>
+
 </div>
-
-</form>
-
-<a href="../../admin/dashboard.php">Volver al Dashboard</a>
 
 </body>
 </html>
