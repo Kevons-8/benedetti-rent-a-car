@@ -225,7 +225,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <form method="POST">
         <div class="form-group">
             <label>Correo</label>
-            <input type="email" name="correo" placeholder="admin@benedetti.com" required>
+            <input
+    type="email"
+    name="correo"
+    value="benedettirentacar@gmail.com"
+    required
+>
         </div>
 
         <div class="form-group">
