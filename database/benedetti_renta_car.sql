@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-05-2026 a las 22:29:19
+-- Tiempo de generación: 08-06-2026 a las 22:12:16
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -40,7 +40,7 @@ CREATE TABLE `administradores` (
 --
 
 INSERT INTO `administradores` (`id`, `nombre`, `correo`, `password`, `creado_en`) VALUES
-(1, 'Administrador Principal', 'benedettirentacar@gmail.com', '$2y$10$m21fvtG04cRyUjkHDLKbjuw0pAli7KHJ7QuwM9kYgLCIQKhJit1Eu', '2026-03-13 17:38:18');
+(1, 'Administrador Principal', 'benedettirentacar@gmail.com', '$2y$10$cA.KEGGQb.2tmVGA5FS/1errKUZYHACcx06YHX0mn0Tu.4Vz4.xMu', '2026-03-13 17:38:18');
 
 -- --------------------------------------------------------
 
@@ -160,7 +160,8 @@ INSERT INTO `pagos` (`id_pago`, `id_reserva`, `metodo_pago`, `monto`, `estado_pa
 (17, 48, '', 400000.00, '', '2026-04-29 17:04:39', 'PAY-RES-20260429190439-5081', NULL, 'wompi_simulado', NULL, NULL),
 (18, 49, '', 720000.00, 'pendiente', '2026-04-30 22:34:02', 'PAY-RES-20260501003402-4378', NULL, 'pendiente_gateway', NULL, NULL),
 (19, 50, '', 1200000.00, 'pendiente', '2026-05-04 20:39:35', 'PAY-RES-20260504223935-6184', NULL, 'pendiente_gateway', NULL, NULL),
-(20, 51, '', 1000000.00, 'pendiente', '2026-05-04 21:14:31', 'PAY-RES-20260504231431-9047', NULL, 'pendiente_gateway', NULL, NULL);
+(20, 51, '', 1000000.00, 'pendiente', '2026-05-04 21:14:31', 'PAY-RES-20260504231431-9047', NULL, 'pendiente_gateway', NULL, NULL),
+(21, 52, '', 750000.00, 'pendiente', '2026-05-26 17:02:40', 'PAY-RES-20260526190240-1417', NULL, 'pendiente_gateway', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -251,7 +252,8 @@ INSERT INTO `reservas` (`id_reserva`, `codigo_reserva`, `id_cliente`, `id_usuari
 (48, 'RES-20260429190439-5', 5, NULL, 2, '2026-05-14 14:00:00', '2026-05-16 14:00:00', 1, 30000.00, NULL, 0, 0.00, 'sitio', 'Oficina Benedetti Rent a Car', 0.00, 'sitio', 'Oficina Benedetti Rent a Car', 0.00, 'no', 0.00, 'limpio', NULL, '', 400000.00, 'Prueba', '2026-04-29 17:04:39', 'tarjeta', NULL, 120000.00, 0.00, 0, 400000.00, 0, 0.00, 400000.00, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00),
 (49, 'RES-20260501003402-4', 5, NULL, 3, '2026-06-01 09:00:00', '2026-06-04 08:00:00', 1, 30000.00, NULL, 0, 0.00, 'sitio', 'Oficina Benedetti Rent a Car', 0.00, 'sitio', 'Oficina Benedetti Rent a Car', 0.00, 'no', 0.00, 'limpio', NULL, '', 720000.00, 'prueba', '2026-04-30 22:34:02', 'pendiente', NULL, 216000.00, 0.00, 0, 720000.00, 23, 0.00, 720000.00, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00),
 (50, 'RES-20260504223935-6', 16, NULL, 2, '2026-06-01 14:00:00', '2026-06-06 20:00:00', 1, 30000.00, NULL, 0, 0.00, 'sitio', 'Oficina Benedetti Rent a Car', 0.00, 'sitio', 'Oficina Benedetti Rent a Car', 0.00, 'no', 0.00, 'limpio', NULL, '', 1200000.00, 'PRueba de reserva cliente nuevo', '2026-05-04 20:39:35', 'pendiente', NULL, 360000.00, 0.00, 0, 1200000.00, 6, 0.00, 1200000.00, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00),
-(51, 'RES-20260504231431-9', 5, NULL, 2, '2026-05-06 09:00:00', '2026-05-11 09:00:00', 1, 30000.00, NULL, 0, 0.00, 'sitio', 'Oficina Benedetti Rent a Car', 0.00, 'sitio', 'Oficina Benedetti Rent a Car', 0.00, 'no', 0.00, 'limpio', NULL, '', 1000000.00, 'Prueba de reserva', '2026-05-04 21:14:31', 'pendiente', NULL, 300000.00, 0.00, 0, 1000000.00, 0, 0.00, 1000000.00, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00);
+(51, 'RES-20260504231431-9', 5, NULL, 2, '2026-05-06 09:00:00', '2026-05-11 09:00:00', 1, 30000.00, NULL, 0, 0.00, 'sitio', 'Oficina Benedetti Rent a Car', 0.00, 'sitio', 'Oficina Benedetti Rent a Car', 0.00, 'no', 0.00, 'limpio', NULL, '', 1000000.00, 'Prueba de reserva', '2026-05-04 21:14:31', 'pendiente', NULL, 300000.00, 0.00, 0, 1000000.00, 0, 0.00, 1000000.00, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00),
+(52, 'RES-20260526190240-1', 5, NULL, 6, '2026-07-09 08:00:00', '2026-07-12 08:00:00', 1, 30000.00, NULL, 0, 0.00, 'sitio', 'Oficina Benedetti Rent a Car', 0.00, 'sitio', 'Oficina Benedetti Rent a Car', 0.00, 'no', 0.00, 'limpio', NULL, '', 750000.00, 'Prueba de Calidad de Software', '2026-05-26 17:02:40', 'pendiente', NULL, 225000.00, 0.00, 0, 750000.00, 0, 0.00, 750000.00, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00);
 
 -- --------------------------------------------------------
 
@@ -448,7 +450,7 @@ ALTER TABLE `documentos`
 -- AUTO_INCREMENT de la tabla `pagos`
 --
 ALTER TABLE `pagos`
-  MODIFY `id_pago` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_pago` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `reservas`
