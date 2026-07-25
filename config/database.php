@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set('America/Bogota');
+
 $host = "localhost";
 $dbname = "benedetti_renta_car";
 $username = "root";

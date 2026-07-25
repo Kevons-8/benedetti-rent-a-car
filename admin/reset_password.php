@@ -66,8 +66,55 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         ]);
 
         echo "
-        <h2>Contraseña actualizada correctamente</h2>
-        <a href='login.php'>Ir al Login</a>
+        <!DOCTYPE html>
+        <html lang='es'>
+        <head>
+            <meta charset='UTF-8'>
+            <title>Contraseña actualizada</title>
+            <style>
+                body{
+                    font-family:Arial, Helvetica, sans-serif;
+                    background:#f5f5f5;
+                    display:flex;
+                    justify-content:center;
+                    align-items:center;
+                    height:100vh;
+                }
+
+                .card{
+                    width:400px;
+                    background:white;
+                    padding:30px;
+                    border-radius:12px;
+                    text-align:center;
+                    box-shadow:0 0 15px rgba(0,0,0,.15);
+                }
+
+                a{
+                    display:inline-block;
+                    margin-top:20px;
+                    padding:12px 20px;
+                    background:#facc15;
+                    color:#000;
+                    text-decoration:none;
+                    border-radius:8px;
+                    font-weight:bold;
+                }
+            </style>
+        </head>
+        <body>
+
+        <div class='card'>
+            <h2>✅ Contraseña actualizada correctamente</h2>
+            <p>Ya puedes iniciar sesión con tu nueva contraseña.</p>
+
+            <a href='login.php'>
+                Ir al Login
+            </a>
+        </div>
+
+        </body>
+        </html>
         ";
 
         exit();
@@ -77,8 +124,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Nueva contraseña</title>
@@ -95,35 +145,46 @@ body{
 }
 
 .card{
-    width:350px;
-    background:rgba(0,0,0,.65);
+    width:380px;
+    background:rgba(0,0,0,.70);
     color:white;
     padding:25px;
     border-radius:15px;
 }
 
+h2{
+    text-align:center;
+}
+
 input{
     width:100%;
-    padding:10px;
-    margin-top:10px;
-    border-radius:8px;
+    padding:12px;
+    margin-top:12px;
     border:none;
+    border-radius:8px;
+    box-sizing:border-box;
 }
 
 button{
     width:100%;
-    margin-top:15px;
+    margin-top:18px;
     padding:12px;
     border:none;
     border-radius:8px;
     background:#facc15;
     font-weight:bold;
     cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:#eab308;
 }
 
 .mensaje{
     color:#ffb3b3;
     margin-bottom:10px;
+    text-align:center;
 }
 
 </style>
@@ -137,9 +198,11 @@ button{
 <h2>Nueva contraseña</h2>
 
 <?php if(!empty($mensaje)): ?>
+
 <div class="mensaje">
     <?= htmlspecialchars($mensaje) ?>
 </div>
+
 <?php endif; ?>
 
 <form method="POST">
