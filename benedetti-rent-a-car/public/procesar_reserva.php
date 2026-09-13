@@ -102,17 +102,18 @@ if (!empty($errores)) {
 try {
     $conexion->beginTransaction();
 
-    $stmtVehiculo = $conexion->prepare("SELECT * FROM vehiculos WHERE id_vehiculo = :id_vehiculo LIMIT 1");
+    $stmtVehiculo = $conexion->prepare("SELECT * FROM vehiculos WHERE id_vehiculo = :id_vehiculo LIMIT 1 FOR UPDATE");
     $stmtVehiculo->bindValue(':id_vehiculo', (int)$datos['id_vehiculo'], PDO::PARAM_INT);
     $stmtVehiculo->execute();
     $vehiculo = $stmtVehiculo->fetch(PDO::FETCH_ASSOC);
 
     if (!$vehiculo) throw new Exception('El vehículo seleccionado no existe.');
+    if (in_array($vehiculo['estado'], ['mantenimiento', 'inactivo'], true)) throw new Exception('El vehículo no está disponible.');
 
     $stmtDisp = $conexion->prepare("
         SELECT COUNT(*) FROM reservas
         WHERE id_vehiculo = :id_vehiculo
-          AND estado_reserva IN ('confirmada','reserva_confirmada','pago_parcial_confirmado','pendiente_anticipo')
+          AND (estado_reserva = 'confirmada' OR (bloquea_disponibilidad = 1 AND estado_reserva NOT IN ('cancelada','finalizada')))
           AND (:fecha_inicio < fecha_fin AND :fecha_fin > fecha_inicio)
     ");
     $stmtDisp->bindValue(':id_vehiculo',   (int)$datos['id_vehiculo'], PDO::PARAM_INT);
@@ -127,15 +128,19 @@ try {
     $stmtCliente = $conexion->prepare("
         SELECT * FROM clientes
         WHERE numero_documento = :numero_documento
-           OR correo = :correo
-           OR telefono = :telefono
         LIMIT 1
     ");
     $stmtCliente->bindValue(':numero_documento', $datos['numero_documento']);
-    $stmtCliente->bindValue(':correo',           $datos['correo']);
-    $stmtCliente->bindValue(':telefono',         $datos['telefono']);
     $stmtCliente->execute();
     $cliente = $stmtCliente->fetch(PDO::FETCH_ASSOC);
+    if ($cliente) {
+        $normalizar = static function ($valor) { return mb_strtolower(preg_replace('/\s+/u', ' ', trim((string)$valor)), 'UTF-8'); };
+        if ($normalizar($cliente['tipo_documento']) !== $normalizar($datos['tipo_documento']) ||
+            $normalizar($cliente['nombres'] ?: $cliente['nombre']) !== $normalizar($datos['nombres']) ||
+            $normalizar($cliente['apellidos'] ?: $cliente['apellido']) !== $normalizar($datos['apellidos'])) {
+            throw new Exception('El documento ya está registrado con otros datos. Verifica la información o contacta a la oficina.');
+        }
+    }
 
     $tipoCliente     = 'nuevo';
     $clienteReferente = null;
@@ -153,8 +158,8 @@ try {
 
     if (!$cliente) {
         $stmtInsertCliente = $conexion->prepare("
-            INSERT INTO clientes (nombre, apellido, nombres, apellidos, correo, telefono, tipo_documento, numero_documento, estado_cliente)
-            VALUES (:nombre, :apellido, :nombres, :apellidos, :correo, :telefono, :tipo_documento, :numero_documento, 'prospecto')
+            INSERT INTO clientes (nombre, apellido, nombres, apellidos, correo, telefono, tipo_documento, numero_documento, estado_cliente, licencia_conduccion)
+            VALUES (:nombre, :apellido, :nombres, :apellidos, :correo, :telefono, :tipo_documento, :numero_documento, 'prospecto', '')
         ");
         $stmtInsertCliente->bindValue(':nombre',           $datos['nombres']);
         $stmtInsertCliente->bindValue(':apellido',         $datos['apellidos']);
@@ -211,7 +216,7 @@ try {
             lat_entrega, lng_entrega, lat_devolucion, lng_devolucion, distancia_km, costo_km
         ) VALUES (
             :codigo_reserva, :id_cliente, :id_vehiculo, :fecha_inicio, :fecha_fin,
-            :lugar_entrega, :lugar_devolucion, :observaciones, 'pendiente_pago', 'pendiente',
+            :lugar_entrega, :lugar_devolucion, :observaciones, 'pendiente', 'pendiente',
             :codigo_referido_usado, :anticipo_requerido, 0, :total_pago,
             :total_estimado, :horas_extra_cobradas, :recargo_horas_extra, :total_final,
             0, :costo_entrega, :costo_devolucion,
@@ -256,6 +261,8 @@ try {
     $stmtInsertPago->execute();
 
     $conexion->commit();
+
+    $_SESSION['reservas_autorizadas'][$idReserva] = ['tipo_cliente' => $tipoCliente];
 
     $_SESSION['reserva_creada'] = [
         'id_reserva'      => $idReserva,
