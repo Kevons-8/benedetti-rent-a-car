@@ -1,11 +1,25 @@
 <?php
 session_start();
 
-require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/../views/partials/header.php';
-require_once __DIR__ . '/../views/partials/navbar.php';
+require_once __DIR__ . '/../config/conexion.php';
+
+$base = (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false)
+    ? '/benedetti-rent-a-car'
+    : '';
 
 $idReserva = isset($_GET['id_reserva']) ? (int)$_GET['id_reserva'] : 0;
+
+if (empty($_SESSION['reservas_autorizadas'][$idReserva])) {
+    http_response_code(403);
+    require_once __DIR__ . '/../views/partials/header.php';
+    require_once __DIR__ . '/../views/partials/navbar.php';
+    echo '<main class="page-section"><div class="container"><p>Inicia una nueva reserva para continuar en esta sesión.</p></div></main>';
+    require_once __DIR__ . '/../views/partials/footer.php';
+    exit;
+}
+$_SESSION['csrf_pago'] = $_SESSION['csrf_pago'] ?? bin2hex(random_bytes(32));
+require_once __DIR__ . '/../views/partials/header.php';
+require_once __DIR__ . '/../views/partials/navbar.php';
 
 if ($idReserva <= 0) {
     echo "<main class='page-section'><div class='container'><div class='placeholder-box'><h2>Reserva no válida</h2><p>No se recibió una reserva válida para continuar con el pago.</p></div></div></main>";
@@ -24,8 +38,8 @@ $sql = "
         r.fecha_fin,
         r.lugar_entrega,
         r.lugar_devolucion,
-        c.nombres,
-        c.apellidos,
+        COALESCE(NULLIF(c.nombres, ''), c.nombre) AS nombres,
+        COALESCE(NULLIF(c.apellidos, ''), c.apellido) AS apellidos,
         c.estado_cliente,
         v.marca,
         v.modelo,
@@ -38,6 +52,7 @@ $sql = "
     INNER JOIN vehiculos v ON v.id_vehiculo = r.id_vehiculo
     INNER JOIN pagos p ON p.id_reserva = r.id_reserva
     WHERE r.id_reserva = :id_reserva
+    ORDER BY p.id_pago DESC
     LIMIT 1
 ";
 
@@ -65,6 +80,7 @@ if (
 }
 
 $metodosPermitidos = [];
+$tipoCliente = $_SESSION['reservas_autorizadas'][$idReserva]['tipo_cliente'];
 if ($tipoCliente === 'nuevo') {
     $metodosPermitidos = ['tarjeta'];
 } else {
@@ -88,7 +104,7 @@ if (isset($reserva['total_final']) && (float)$reserva['total_final'] > 0) {
     $totalPagar = (float)($reserva['total_estimado'] ?? 0);
 }
 
-function formatearEstado(string $valor = null): string
+function formatearEstado(?string $valor = null): string
 {
     $valor = trim((string)$valor);
 
@@ -114,7 +130,7 @@ function formatearEstado(string $valor = null): string
             rgba(6, 18, 38, 0.84) 55%,
             rgba(6, 18, 38, 0.96) 100%
         ),
-        url("/benedetti-rent-a-car/assets/img/pumarejo_nuevo.png") center center / cover no-repeat fixed;
+        url("<?php echo $base; ?>/assets/img/pumarejo_nuevo.png") center center / cover no-repeat fixed;
 
     background-size: cover;
     background-position: center;
@@ -316,11 +332,11 @@ function formatearEstado(string $valor = null): string
             <aside class="pago-sidebar">
                 <div class="vehiculo-card vehiculo-resumen">
                     <?php if ($imagenVehiculo): ?>
-                        <img
-                            src="/benedetti-rent-a-car/assets/img/<?php echo htmlspecialchars($imagenVehiculo); ?>"
-                            alt="<?php echo htmlspecialchars($marcaModelo); ?>"
-                            class="vehiculo-mini-img"
-                        >
+    <img
+    src="<?php echo $base; ?>/assets/img/vehiculos/<?php echo htmlspecialchars($imagenVehiculo); ?>"
+    alt="<?php echo htmlspecialchars($marcaModelo); ?>"
+    class="vehiculo-mini-img"
+>
                     <?php endif; ?>
 
                     <div class="vehiculo-info">
@@ -361,8 +377,9 @@ function formatearEstado(string $valor = null): string
 
                     <div class="metodos-grid" style="margin-top:16px;">
                         <?php if (in_array('tarjeta', $metodosPermitidos, true)): ?>
-                            <form action="/benedetti-rent-a-car/public/iniciar_pago.php" method="post" class="metodo-form">
+                            <form action="<?php echo $base; ?>/public/iniciar_pago.php" method="post" class="metodo-form">
                                 <input type="hidden" name="id_reserva" value="<?php echo (int)$reserva['id_reserva']; ?>">
+                                <input type="hidden" name="csrf_pago" value="<?php echo htmlspecialchars($_SESSION['csrf_pago'], ENT_QUOTES, 'UTF-8'); ?>">
                                 <input type="hidden" name="metodo_pago" value="tarjeta">
                                 <button type="submit" class="metodo-btn">
                                     <strong>Pagar con tarjeta</strong>
@@ -372,8 +389,9 @@ function formatearEstado(string $valor = null): string
                         <?php endif; ?>
 
                         <?php if (in_array('pse', $metodosPermitidos, true)): ?>
-                            <form action="/benedetti-rent-a-car/public/iniciar_pago.php" method="post" class="metodo-form">
+                            <form action="<?php echo $base; ?>/public/iniciar_pago.php" method="post" class="metodo-form">
                                 <input type="hidden" name="id_reserva" value="<?php echo (int)$reserva['id_reserva']; ?>">
+                                <input type="hidden" name="csrf_pago" value="<?php echo htmlspecialchars($_SESSION['csrf_pago'], ENT_QUOTES, 'UTF-8'); ?>">
                                 <input type="hidden" name="metodo_pago" value="pse">
                                 <button type="submit" class="metodo-btn">
                                     <strong>Pagar con PSE</strong>
@@ -383,8 +401,9 @@ function formatearEstado(string $valor = null): string
                         <?php endif; ?>
 
                         <?php if (in_array('qr', $metodosPermitidos, true)): ?>
-                            <form action="/benedetti-rent-a-car/public/iniciar_pago.php" method="post" class="metodo-form">
+                            <form action="<?php echo $base; ?>/public/iniciar_pago.php" method="post" class="metodo-form">
                                 <input type="hidden" name="id_reserva" value="<?php echo (int)$reserva['id_reserva']; ?>">
+                                <input type="hidden" name="csrf_pago" value="<?php echo htmlspecialchars($_SESSION['csrf_pago'], ENT_QUOTES, 'UTF-8'); ?>">
                                 <input type="hidden" name="metodo_pago" value="qr">
                                 <button type="submit" class="metodo-btn">
                                     <strong>Pagar con QR</strong>
@@ -394,8 +413,9 @@ function formatearEstado(string $valor = null): string
                         <?php endif; ?>
 
                         <?php if (in_array('efectivo', $metodosPermitidos, true)): ?>
-                            <form action="/benedetti-rent-a-car/public/iniciar_pago.php" method="post" class="metodo-form">
+                            <form action="<?php echo $base; ?>/public/iniciar_pago.php" method="post" class="metodo-form">
                                 <input type="hidden" name="id_reserva" value="<?php echo (int)$reserva['id_reserva']; ?>">
+                                <input type="hidden" name="csrf_pago" value="<?php echo htmlspecialchars($_SESSION['csrf_pago'], ENT_QUOTES, 'UTF-8'); ?>">
                                 <input type="hidden" name="metodo_pago" value="efectivo">
                                 <button type="submit" class="metodo-btn">
                                     <strong>Pago en efectivo con anticipo</strong>

@@ -1,5 +1,5 @@
 <?php
-include("../config/conexion.php");
+require_once "../config/database.php";
 
 $busqueda = "";
 

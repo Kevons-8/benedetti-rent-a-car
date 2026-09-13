@@ -1,15 +1,16 @@
 <?php
 
-date_default_timezone_set('America/Bogota');
-
 $host = "localhost";
-$dbname = "benedetti_renta_car";
-$username = "root";
+$usuario = "root";
 $password = "";
+$bd = "benedetti_renta_car";
 
-try {
-    $conexion = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Error de conexión: " . $e->getMessage());
+$conn = new mysqli($host, $usuario, $password, $bd);
+
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
 }
+
+$conn->set_charset("utf8");
+
+?>
