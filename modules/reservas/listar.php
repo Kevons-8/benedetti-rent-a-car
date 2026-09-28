@@ -19,13 +19,7 @@ $sql = "SELECT
         INNER JOIN vehiculos v ON r.id_vehiculo = v.id_vehiculo
         ORDER BY r.id_reserva DESC";
 
-$resultado = $conn->query($sql);
-
-if ($resultado === false) {
-    die("Error al consultar las reservas: " . $conn->error);
-}
-
-$reservas = $resultado->fetch_all(MYSQLI_ASSOC);
+$reservas = $conexion->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>

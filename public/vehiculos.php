@@ -1,25 +1,24 @@
 <?php
-require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/../views/partials/header.php';
-require_once __DIR__ . '/../views/partials/navbar.php';
-
-$sql = "SELECT * FROM vehiculos WHERE estado = 'disponible' ORDER BY id_vehiculo ASC";
-
-$stmt = $conn->prepare($sql);
-
-if (!$stmt) {
-    die("Error al preparar la consulta: " . $conn->error);
-}
-
-$stmt->execute();
-$resultado = $stmt->get_result();
-$vehiculos = $resultado->fetch_all(MYSQLI_ASSOC);
-$stmt->close();
-
-// Detecta automáticamente si estás en local o en producción
 $base = (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false)
     ? '/benedetti-rent-a-car'
     : '';
+
+if ($base === '') {
+    require_once __DIR__ . '/../config/conexion.php';
+    $stmt = $conexion->prepare("SELECT * FROM vehiculos WHERE estado = 'disponible' ORDER BY id_vehiculo ASC");
+    $stmt->execute();
+    $vehiculos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} else {
+    require_once __DIR__ . '/../config/database.php';
+    $stmt = $conn->prepare("SELECT * FROM vehiculos WHERE estado = 'disponible' ORDER BY id_vehiculo ASC");
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $vehiculos = $resultado->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+}
+
+require_once __DIR__ . '/../views/partials/header.php';
+require_once __DIR__ . '/../views/partials/navbar.php';
 ?>
 
 <main>
