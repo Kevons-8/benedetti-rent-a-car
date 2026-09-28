@@ -1,13 +1,15 @@
-/vendor/
-/node_modules/
+# Configuración local y de producción: nunca versionar credenciales reales.
+/config/conexion.php
+/config/database.php
+/config/mail_config.php
 
-config/mail.php
-config/mail_config.php
-
-admin/generar_hash.php
+# Archivos de entorno y herramientas locales.
 .env
-
+.env.*
+!.env.example
+/tmp/
+/uploads/
 *.log
 
-.DS_Store
-Thumbs.db
+# Dependencias de herramientas locales.
+/.phpunit.cache/
