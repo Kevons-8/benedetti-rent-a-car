@@ -2,11 +2,7 @@
     <div class="container nav">
         <div class="logo">
             <a href="/public/index.php" class="logo-link">
-                <img src="/assets/img/Logo_2.png" alt="Logo" class="logo-img">
-                <div class="logo-text">
-                    <span class="logo-title">Benedetti</span>
-                    <span class="logo-subtitle">Rent a Car</span>
-                </div>
+                <img src="/assets/img/logo-benedetti-hero-transparent.png" alt="Benedetti Rent a Car" class="logo-img logo-img-wordmark">
             </a>
         </div>
         <nav>
