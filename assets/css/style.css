@@ -97,6 +97,11 @@ img {
     filter: brightness(0) invert(1);
 }
 
+.logo-img-wordmark {
+    width: 155px;
+    filter: none;
+}
+
 .logo-text {
     display: flex;
     flex-direction: column;
@@ -2587,4 +2592,62 @@ body:has(.reserva-layout) .vehiculo-resumen {
     border: none;
     border-radius: 8px;
     cursor: pointer;
+}
+
+/* =========================
+   HOME · EXPERIENCIA CARIBE
+========================= */
+.home-page { background: #061b32; overflow: hidden; }
+body:has(.home-page) .site-header { background: rgba(2, 20, 43, .88); border-bottom-color: rgba(255,255,255,.07); }
+body:has(.home-page) .site-header .nav { max-width: 1200px; min-height: 82px; padding-top: 16px; padding-bottom: 16px; }
+body:has(.home-page) .logo-img { width: 56px; }
+body:has(.home-page) .logo-img-wordmark { width: 155px; filter: none; }
+body:has(.home-page) .logo-title { font-size: 1.08rem; }
+body:has(.home-page) .logo-subtitle { font-size: .78rem; }
+body:has(.home-page) .nav-links { gap: 25px; }
+body:has(.home-page) .nav-links a { font-size: 1rem; font-weight: 600; }
+.home-page .home-hero { min-height: min(780px, 100vh); background-position: center; background-attachment: scroll; }
+.home-page .hero-overlay { background: linear-gradient(90deg, rgba(3, 21, 43, .92) 0%, rgba(4, 29, 57, .62) 46%, rgba(3, 20, 38, .18) 100%), linear-gradient(0deg, rgba(3, 16, 32, .48), transparent 48%); }
+.home-hero-sky-logo { position: absolute; z-index: 2; width: min(190px, 14.5vw); height: auto; top: 15%; left: 57%; opacity: .84; filter: drop-shadow(0 8px 15px rgba(0,0,0,.28)); pointer-events: none; }
+.home-page .hero-content { min-height: min(780px, 100vh); justify-content: center; padding-top: 150px; padding-bottom: 105px; }
+.home-page .hero-text { max-width: 635px; }
+.home-page .hero-badge { background: rgba(5, 33, 60, .5); border-color: rgba(255, 197, 83, .45); color: #eaf4ff; font-size: .7rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; padding: 10px 14px; }
+.home-page .hero-badge span { display: inline-block; width: 22px; height: 1px; margin: 0 9px 4px 0; background: #ffbb4b; }
+.home-page .hero-text h1 { font-size: clamp(2.65rem, 4.35vw, 4.55rem); letter-spacing: -.05em; line-height: .98; margin-bottom: 20px; }
+.home-page .hero-text p { max-width: 550px; color: #e5edf7; font-size: 1.05rem; line-height: 1.7; }
+.home-page .btn-primary { background: linear-gradient(115deg, #ff8147, #ffb12c); box-shadow: 0 14px 30px rgba(255, 136, 43, .32); }
+.home-trust-bar { position: absolute; bottom: 36px; left: 7%; right: 7%; display: grid; grid-template-columns: repeat(3, 1fr); color: #eff6ff; font-size: .88rem; font-weight: 700; border-top: 1px solid rgba(255,255,255,.24); }
+.home-trust-bar span { min-height: 57px; display: flex; align-items: center; padding: 14px 22px 0 0; }
+.home-trust-bar span + span { border-left: 1px solid rgba(255,255,255,.24); padding-left: 22px; }
+.home-trust-bar b { color: #ffba50; margin-right: 10px; font-size: 1.05rem; }
+.home-page .home-showcase-overlap { margin-top: -48px; padding-bottom: 100px; }
+.home-page .home-showcase-card { background: linear-gradient(108deg, rgba(3, 21, 42, .94), rgba(5, 32, 61, .76)), url('/assets/img/malecon_nocturno.jpg') center/cover; border-color: rgba(131, 192, 240, .17); padding: 52px; }
+.eyebrow { color: #ffbd5a; font-size: .68rem; font-weight: 800; letter-spacing: .17em; }
+.home-page .section-header h2 { max-width: 650px; font-size: clamp(2.15rem, 3.2vw, 3.3rem); line-height: 1.04; margin-top: 13px; }
+.home-page .section-header p { max-width: 630px; line-height: 1.7; }
+.home-page .card { min-height: 178px; background: rgba(255,255,255,.055); padding: 26px; border-radius: 15px; }
+.home-page .card h3 { color: #fff; font-size: 1.05rem; margin-top: 30px; }
+.benefit-number { color: #ffbe59; font-size: .75rem; font-weight: 800; letter-spacing: .12em; }
+.home-destination-section { background: #061b32; color: #f5f7fb; padding: 108px 7%; }
+.destination-layout { display: grid; grid-template-columns: .85fr 1.15fr; gap: 76px; align-items: center; }
+.eyebrow-dark { color: #ffbd5a; }
+.destination-copy h2 { font-size: clamp(2.5rem, 4vw, 4rem); letter-spacing: -.05em; line-height: 1; margin: 14px 0 22px; }
+.destination-copy p { color: #bfd0e1; line-height: 1.8; max-width: 440px; }
+.destination-gallery { position: relative; min-height: 420px; padding: 0 0 46px 46px; }
+.destination-gallery img { object-fit: cover; box-shadow: 0 24px 50px rgba(9, 33, 55, .2); }
+.destination-main { width: 100%; height: 420px; border-radius: 3px 36px 3px 3px; }
+.destination-detail { position: absolute; left: 0; bottom: 0; width: 43%; height: 185px; border: 7px solid #f5f1e9; }
+@media (max-width: 768px) {
+  body:has(.home-page) .nav-links { gap: 12px; }
+  .home-page .hero-content { padding-top: 130px; padding-bottom: 150px; }
+  .home-page .hero-text h1 { font-size: clamp(2.8rem, 13vw, 4rem); }
+  .home-hero-sky-logo { width: 108px; top: 15%; left: auto; right: 8%; }
+  .home-trust-bar { bottom: 24px; grid-template-columns: 1fr; border-top: 0; }
+  .home-trust-bar span { min-height: 27px; padding: 0; font-size: .75rem; }
+  .home-trust-bar span + span { border-left: 0; padding-left: 0; }
+  .destination-layout { grid-template-columns: 1fr; gap: 42px; }
+  .home-destination-section { padding: 76px 7%; }
+  .destination-gallery { min-height: 330px; padding-left: 28px; }
+  .destination-main { height: 330px; }
+  .destination-detail { height: 145px; }
 }

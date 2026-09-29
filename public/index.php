@@ -2,52 +2,41 @@
 require_once __DIR__ . '/../views/partials/header.php';
 require_once __DIR__ . '/../views/partials/navbar.php';
 ?>
-<main>
-    <section class="hero hero-static-banner" style="background-image: url('/assets/img/hero_barranquilla.png');">
+<main class="home-page">
+    <section class="hero hero-static-banner home-hero" style="background-image: url('/assets/img/hero-malecon-rio-v2.png');">
         <div class="hero-overlay"></div>
+        <img class="home-hero-sky-logo" src="/assets/img/logo-benedetti-hero-transparent.png" alt="Benedetti Rent a Car">
         <div class="container hero-content">
             <div class="hero-text">
-                <span class="hero-badge">Movilidad segura en Barranquilla</span>
-                <h1>Alquila tu vehículo con confianza</h1>
+                <span class="hero-badge"><span></span>Barranquilla · Caribe colombiano</span>
+                <h1>El Caribe se disfruta mejor a tu ritmo.</h1>
                 <p>
-                    Descubre Barranquilla con estilo, comodidad y seguridad.
+                    Tu viaje comienza en Barranquilla. Recorre la ciudad, la costa y cada destino con comodidad, libertad y atención cercana.
                 </p>
                 <div class="hero-buttons">
                     <a href="/public/vehiculos.php" class="btn btn-primary">
-                        <span class="btn-icon">🚗</span>
+                        <span class="btn-icon">⌁</span>
                         <span>Reservar vehículo</span>
                     </a>
                 </div>
             </div>
+            <div class="home-trust-bar" aria-label="Beneficios de Benedetti Rent a Car">
+                <span><b>✦</b> Atención personalizada</span>
+                <span><b>✦</b> Viaja con confianza</span>
+                <span><b>✦</b> Entrega flexible</span>
+            </div>
         </div>
     </section>
-    <section class="home-showcase-overlap">
-        <div class="container">
-            <div class="home-showcase-card animate-on-scroll">
-                <div class="section-header section-header-light">
-                    <h2>¿Por qué elegir Benedetti Rent a Car?</h2>
-                    <p>
-                        Te ofrecemos una experiencia confiable, rápida y adaptada a tus necesidades.
-                    </p>
-                </div>
-                <div class="benefits-grid">
-                    <article class="card hover-lift">
-                        <h3>Atención personalizada</h3>
-                        <p>Te acompañamos durante todo el proceso.</p>
-                    </article>
-                    <article class="card hover-lift">
-                        <h3>Vehículos confiables</h3>
-                        <p>Autos listos para cualquier tipo de viaje.</p>
-                    </article>
-                    <article class="card hover-lift">
-                        <h3>Proceso sencillo</h3>
-                        <p>Reserva fácil y sin complicaciones.</p>
-                    </article>
-                    <article class="card hover-lift">
-                        <h3>Flexibilidad</h3>
-                        <p>Nos adaptamos a tus tiempos.</p>
-                    </article>
-                </div>
+    <section class="home-destination-section">
+        <div class="container destination-layout">
+            <div class="destination-copy animate-on-scroll">
+                <span class="eyebrow eyebrow-dark">DESCUBRE A TU MANERA</span>
+                <h2>Más que un destino,<br>una ruta por vivir.</h2>
+                <p>Del Malecón del Río a la costa Caribe, cada recorrido tiene una historia. Elige el vehículo que te acompaña a vivirla.</p>
+            </div>
+            <div class="destination-gallery animate-on-scroll">
+                <img class="destination-main" src="/assets/img/malecon_y_buque_gloria.jpg" alt="Malecón del Río, Barranquilla">
+                <img class="destination-detail" src="/assets/img/ventana_al_mundo.jpg" alt="Ventana al Mundo en Barranquilla">
             </div>
         </div>
     </section>
