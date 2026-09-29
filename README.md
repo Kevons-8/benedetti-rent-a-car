@@ -16,9 +16,10 @@ La única ruta válida para publicar es: **local → GitHub → producción**.
 
 1. Copiar el proyecto al directorio web de XAMPP.
 2. Crear una base de datos local compatible.
-3. Copiar los archivos `config/*.example.php` a sus nombres sin `.example`.
-4. Completar las credenciales locales en esos archivos, que no se suben a Git.
-5. Iniciar Apache y MySQL desde el panel de XAMPP.
+3. Ejecutar `composer install` en la raíz del proyecto para instalar PHPMailer y las demás dependencias bloqueadas.
+4. Copiar los archivos `config/*.example.php` a sus nombres sin `.example`.
+5. Completar las credenciales locales en esos archivos, que no se suben a Git.
+6. Iniciar Apache y MySQL desde el panel de XAMPP.
 
 ## Seguridad
 

@@ -4,8 +4,10 @@
 
 1. Probar el cambio completo en XAMPP.
 2. Confirmar que la rama y el commit aprobados están en GitHub.
-3. Respaldar la base de datos si el cambio la afecta.
-4. No incluir archivos de configuración locales ni credenciales en la carga.
+3. Ejecutar `composer install --no-dev` en una copia limpia del proyecto para preparar las dependencias PHP, incluido PHPMailer.
+4. Si la publicación es manual por FTP, incluir la carpeta `vendor/` generada por Composer.
+5. Respaldar la base de datos si el cambio la afecta.
+6. No incluir archivos de configuración locales ni credenciales en la carga.
 
 ## Publicación manual inicial
 

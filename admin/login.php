@@ -1,7 +1,5 @@
 <?php
-
 session_start();
-
 require_once "../config/database.php";
 
 if (isset($_SESSION["admin_id"])) {
@@ -12,54 +10,34 @@ if (isset($_SESSION["admin_id"])) {
 $mensaje = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
-    $correo = trim($_POST["correo"] ?? "");
-    $password = $_POST["password"] ?? "";
+    $correo = trim($_POST["correo"]);
+    $password = trim($_POST["password"]);
 
     if (!empty($correo) && !empty($password)) {
+        $sql = "SELECT * FROM administradores WHERE correo = :correo LIMIT 1";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindParam(":correo", $correo);
+        $stmt->execute();
 
-        $sql = "SELECT * FROM administradores WHERE correo = ? LIMIT 1";
+        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $stmt = $conn->prepare($sql);
+        if ($admin && password_verify($password, $admin["password"])) {
+            $_SESSION["admin_id"] = $admin["id"];
+            $_SESSION["admin_nombre"] = $admin["nombre"];
+            $_SESSION["admin_correo"] = $admin["correo"];
 
-        if ($stmt) {
-
-            $stmt->bind_param("s", $correo);
-
-            $stmt->execute();
-
-            $resultado = $stmt->get_result();
-
-            $admin = $resultado->fetch_assoc();
-
-            if ($admin && password_verify($password, $admin["password"])) {
-
-                $_SESSION["admin_id"] = $admin["id"];
-                $_SESSION["admin_nombre"] = $admin["nombre"];
-                $_SESSION["admin_correo"] = $admin["correo"];
-
-                header("Location: dashboard.php");
-                exit();
-
-            } else {
-
-                $mensaje = "Correo o contraseña incorrectos.";
-            }
-
-            $stmt->close();
-
+            header("Location: dashboard.php");
+            exit();
         } else {
-
-            $mensaje = "Error al preparar la consulta.";
+            $mensaje = "Correo o contraseña incorrectos.";
         }
-
     } else {
-
         $mensaje = "Todos los campos son obligatorios.";
     }
 }
-
 ?>
+
+<!DOCTYPE html>
 
 <html lang="es">
 <head>
